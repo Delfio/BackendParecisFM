@@ -1,21 +1,18 @@
 import Sequelize, { Model } from 'sequelize';
 
-class Banner extends Model {
+class Radio extends Model {
   static init(sequelize) {
     super.init({
       name: Sequelize.STRING,
-      path: Sequelize.STRING,
-      radio_id: Sequelize.INTEGER
+      cidade: Sequelize.STRING
     }, 
       {
         sequelize,
       }
     );
 
-
     return this;
   }
-
 }
 
-export default Banner;
+export default Radio;

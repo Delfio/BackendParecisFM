@@ -23,12 +23,17 @@ class UserController{
         return res.status(400).json({error: 'Email já em uso'})
       }
 
-      const { id, name, email } = await User.create(req.body);
+      const { id, name, email, radio } = await User.create({
+        name: req.body.name,
+        email: req.body.email,
+        radio_id: req.body.radio_id,
+      });
 
       return res.json({
         id,
         name,
-        email
+        email,
+        radio
       });
 
     }catch(err){
@@ -53,10 +58,12 @@ class UserController{
         oldPassword ? field.required(): field
         ),
 
-        confirmPassword:
-          Yup.string().when('password', (password, field) =>
-          password ? field.required().oneOf([Yup.ref('password')]) : field
-        ),
+      confirmPassword:
+        Yup.string().when('password', (password, field) =>
+        password ? field.required().oneOf([Yup.ref('password')]) : field
+      ),
+      radio_id:
+        Yup.number(),
     });
 
     try {
@@ -65,6 +72,7 @@ class UserController{
       }
 
       const {userId} = req;
+
       const {email, oldPassword, password} = req.body;
   
       const user =  await User.findByPk(userId);
@@ -84,13 +92,14 @@ class UserController{
       if(oldPassword && !(await user.checkPassword(oldPassword))){
         return res.status(401).json({error: 'Senha não confere'})
       }
-  
-      const {id, name} = await user.update(req.body);
+
+      const {id, name, radio_id} = await user.update(req.body);
 
       return res.json({
         id,
         name,
-        email
+        email,
+        radio_id
       });
     } catch (err){
       return res.status(500).json({error: err.message});

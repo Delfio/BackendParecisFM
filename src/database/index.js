@@ -4,8 +4,9 @@ import databaseConfig from '../config/database';
 
 import User from '../app/models/User';
 import Banner from '../app/models/Banner';
+import Radio from '../app/models/Radio';
 
-const models = [User, Banner];
+const models = [User, Banner, Radio];
 
 class Database {
   constructor() {
