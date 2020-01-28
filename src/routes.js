@@ -7,5 +7,6 @@ const routes = new Router();
 
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionsController.store);
+routes.put('/users', UserController.update);
 
 export default routes;

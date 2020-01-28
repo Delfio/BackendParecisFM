@@ -1,12 +1,15 @@
+import 'dotenv/config';
+
+
 module.exports = {
-  dialect: 'mysql',
-  host: 'localhost',
-  username: 'root',
-  password: '',
-  database: 'parecisfm',
+  dialect: process.env.DIALECT,
+  host: process.env.HOST,
+  username: process.env.USERNAME,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
   define: {
-    timestamps: true,
-    underscored: true,
-    underscoredAll: true,
+    timestamps: process.env.timestamps,
+    underscored: process.env.underscored,
+    underscoredAll: process.env.underscoredAll,
   }
 };
