@@ -14,7 +14,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      Cidade: {
+      cidade: {
         type: Sequelize.STRING,
         allowNull: false
       },
