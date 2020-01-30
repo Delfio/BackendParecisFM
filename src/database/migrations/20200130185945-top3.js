@@ -3,20 +3,27 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
 
-    return queryInterface.createTable('radios', {
+    return queryInterface.createTable('top3s', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
+      artista: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      link: {
+      musica: {
         type: Sequelize.STRING,
         allowNull: false,
+      },
+      radio_id: {
+        type: Sequelize.INTEGER,
+        references: { model: 'radios', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+        allowNull: true,
       },
       created_at:{
         type: Sequelize.DATE,
@@ -27,10 +34,12 @@ module.exports = {
         allowNull: false,
       }
     });
+
   },
 
   down: (queryInterface, Sequelize) => {
 
-    return queryInterface.dropTable('radios');
+    return queryInterface.dropTable('top3s');
+
   }
 };

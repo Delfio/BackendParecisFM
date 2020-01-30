@@ -3,20 +3,22 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
 
-    return queryInterface.createTable('radios', {
+    return queryInterface.createTable('estados', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
+      nome: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true
       },
-      link: {
+      uf: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true
       },
       created_at:{
         type: Sequelize.DATE,
@@ -27,10 +29,12 @@ module.exports = {
         allowNull: false,
       }
     });
+
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface) => {
 
-    return queryInterface.dropTable('radios');
+    return queryInterface.dropTable('estados');
+
   }
 };

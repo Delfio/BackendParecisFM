@@ -2,19 +2,14 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-
-    return queryInterface.createTable('radios', {
+    return queryInterface.createTable('cidades', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      link: {
+      nome: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -27,10 +22,11 @@ module.exports = {
         allowNull: false,
       }
     });
+
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface) => {
+    return queryInterface.dropTable('cidades');
 
-    return queryInterface.dropTable('radios');
   }
 };

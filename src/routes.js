@@ -17,6 +17,8 @@ const upload = multer(MulterConfig);
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionsController.store);
 
+// routes.post('/musica/:id', PedidosController.store);
+
 routes.use(authMiddlewares);
 
 routes.put('/users', UserController.update);
