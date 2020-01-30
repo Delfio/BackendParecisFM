@@ -7,8 +7,13 @@ import databaseConfig from '../config/database';
 import User from '../app/models/User';
 import Banner from '../app/models/Banner';
 import Radio from '../app/models/Radio';
+import Pedidos from '../app/models/Pedidos';
 
-const models = [User, Banner, Radio];
+
+import Estado from '../app/models/Estado';
+import Cidade from '../app/models/Cidade';
+
+const models = [User, Banner, Radio, Pedidos, Estado, Cidade];
 
 class Database {
   constructor() {

@@ -1,19 +1,20 @@
 import Sequelize, { Model } from 'sequelize';
 
-class Radio extends Model {
+class Estado extends Model {
   static init(sequelize) {
     super.init({
-      name: Sequelize.STRING,
-      link: Sequelize.STRING,
-      cidade_id: Sequelize.INTEGER,
+      nome: Sequelize.STRING,
+      uf: Sequelize.STRING
     }, 
       {
         sequelize,
       }
     );
 
+
     return this;
   }
+
 }
 
-export default Radio;
+export default Estado;

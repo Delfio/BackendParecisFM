@@ -12,7 +12,6 @@ module.exports = {
       artista: {
         type: Sequelize.STRING,
         allowNull: true,
-
       },
       musica: {
         type: Sequelize.STRING,

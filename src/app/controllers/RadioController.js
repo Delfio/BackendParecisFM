@@ -5,7 +5,7 @@ class RadioController{
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required('O nome da rádio é obrigatório'),
-      cidade: Yup.string().required('A cidade da rádio é obrigatória'),
+      cidade: Yup.number(),
       link: Yup.string().url('Insira uma url válida').required('A URL é requerida')
     })
 
@@ -17,7 +17,7 @@ class RadioController{
       const { name, cidade, link } = req.body;
 
 
-      const radioExists = await Radio.findOne({ where: { cidade: req.body.cidade } });
+      const radioExists = await Radio.findOne({ where: { name: req.body.name } });
 
       // console.log(radioExists);
 
@@ -25,7 +25,7 @@ class RadioController{
 
       const radio = await Radio.create({
         name,
-        cidade,
+        cidade_id: cidade,
         link
       })
 
