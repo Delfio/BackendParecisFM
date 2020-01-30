@@ -13,6 +13,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      adm: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       email: {
         type: Sequelize.STRING,
         allowNull: false,

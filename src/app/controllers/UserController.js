@@ -27,6 +27,7 @@ class UserController{
         name: req.body.name,
         email: req.body.email,
         radio_id: req.body.radio_id,
+        password: req.body.password
       });
 
       return res.json({

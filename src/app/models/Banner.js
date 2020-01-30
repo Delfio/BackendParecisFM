@@ -5,7 +5,8 @@ class Banner extends Model {
     super.init({
       name: Sequelize.STRING,
       path: Sequelize.STRING,
-      radio_id: Sequelize.INTEGER
+      radio_id: Sequelize.INTEGER,
+      type: Sequelize.BOOLEAN
     }, 
       {
         sequelize,

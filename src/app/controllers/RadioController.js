@@ -6,6 +6,7 @@ class RadioController{
     const schema = Yup.object().shape({
       name: Yup.string().required('O nome da rádio é obrigatório'),
       cidade: Yup.string().required('A cidade da rádio é obrigatória'),
+      link: Yup.string().url('Insira uma url válida').required('A URL é requerida')
     })
 
     try {
@@ -13,7 +14,7 @@ class RadioController{
         return res.status(400).json({error: 'Erro, verifique os dados'})
       }
 
-      const { name, cidade } = req.body;
+      const { name, cidade, link } = req.body;
 
 
       const radioExists = await Radio.findOne({ where: { cidade: req.body.cidade } });
@@ -24,7 +25,8 @@ class RadioController{
 
       const radio = await Radio.create({
         name,
-        cidade
+        cidade,
+        link
       })
 
       return res.json(radio);

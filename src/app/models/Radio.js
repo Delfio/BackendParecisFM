@@ -4,7 +4,8 @@ class Radio extends Model {
   static init(sequelize) {
     super.init({
       name: Sequelize.STRING,
-      cidade: Sequelize.STRING
+      cidade: Sequelize.STRING,
+      link: Sequelize.STRING
     }, 
       {
         sequelize,

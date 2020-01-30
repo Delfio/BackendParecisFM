@@ -14,6 +14,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      type: {
+        type: Sequelize.ENUM(['1', '2']),
+        defaultValue: '1'
+      },
       path: {
         type: Sequelize.STRING,
         allowNull: false,
