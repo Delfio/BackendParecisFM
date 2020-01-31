@@ -9,9 +9,21 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
+      nome: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      idade: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      telefone: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       artista: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       musica: {
         type: Sequelize.STRING,

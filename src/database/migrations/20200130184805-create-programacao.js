@@ -10,16 +10,8 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
       horario: {
         type: Sequelize.STRING,
-        allowNull: false,
-      },
-      dia: {
-        type: Sequelize.ENUM(['1', '2', '3', '4', '5', '6', '7']),
         allowNull: false,
       },
       user_id: {

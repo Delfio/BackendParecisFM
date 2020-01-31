@@ -2,25 +2,21 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('icon', {
+    return queryInterface.createTable('programas', { 
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      path: {
+      nome: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
+        unique: true
       },
-      radio_id: {
+      user_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'radios', key: 'id' },
+        references: { model: 'users', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
         allowNull: true,
@@ -34,10 +30,12 @@ module.exports = {
         allowNull: false,
       }
     });
+  
   },
 
   down: (queryInterface) => {
-    return queryInterface.dropTable('icon');
 
+    return queryInterface.dropTable('programas');
+    
   }
 };

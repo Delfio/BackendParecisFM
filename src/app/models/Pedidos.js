@@ -3,10 +3,13 @@ import Sequelize, { Model } from 'sequelize';
 class Pedido extends Model {
   static init(sequelize) {
     super.init({
-      musica: Sequelize.STRING,
+      nome: Sequelize.STRING,
+      idade: Sequelize.STRING,
+      telefone: Sequelize.STRING,
       artista: Sequelize.STRING,
-      radio_id: Sequelize.INTEGER,
-      data: Sequelize.DATE
+      musica: Sequelize.STRING,
+      data: Sequelize.DATE,
+      radio_id: Sequelize.INTEGER
     }, 
       {
         sequelize,

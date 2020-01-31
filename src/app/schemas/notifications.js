@@ -5,6 +5,10 @@ const NotificationsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  hora: {
+    type: Date,
+    required: true,
+  },
   radio: {
     type: Number,
     required: true,

@@ -13,6 +13,10 @@ import PedidosController from './app/controllers/PedidosController';
 import EstadosController from './app/controllers/EstadosController';
 import CidadeController from './app/controllers/CidadeController';
 
+import ProgramacaoController from './app/controllers/ProgramacaoController';
+import ProgramaController from './app/controllers/ProgramaController';
+import DiaController from './app/controllers/DiasController';
+
 import authMiddlewares from './app/middlewares/auth';
 
 const routes = new Router();
@@ -25,6 +29,11 @@ routes.post('/sessions', SessionsController.store);
 routes.post('/musica/:id', PedidosController.store);
 
 routes.use(authMiddlewares);
+
+routes.post('/programa', ProgramaController.store);
+routes.post('/dia', DiaController.store);
+
+routes.post('/programacaos', ProgramacaoController.store);
 
 routes.post('/estados', EstadosController.store)
 routes.post('/cidades', CidadeController.store)

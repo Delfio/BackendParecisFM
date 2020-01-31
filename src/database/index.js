@@ -13,7 +13,21 @@ import Pedidos from '../app/models/Pedidos';
 import Estado from '../app/models/Estado';
 import Cidade from '../app/models/Cidade';
 
-const models = [User, Banner, Radio, Pedidos, Estado, Cidade];
+import Dia from '../app/models/Dia';
+import Programacao from '../app/models/Programacao';
+import Programa from '../app/models/Programa';
+
+const models = [
+  User, 
+  Banner, 
+  Radio, 
+  Pedidos, 
+  Estado, 
+  Cidade, 
+  Dia, 
+  Programacao,
+  Programa
+];
 
 class Database {
   constructor() {
