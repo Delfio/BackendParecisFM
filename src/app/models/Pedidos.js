@@ -9,7 +9,6 @@ class Pedido extends Model {
       artista: Sequelize.STRING,
       musica: Sequelize.STRING,
       data: Sequelize.DATE,
-      radio_id: Sequelize.INTEGER
     }, 
       {
         sequelize,
@@ -20,6 +19,10 @@ class Pedido extends Model {
     return this;
   }
 
+  static associate(models){
+    this.belongsTo(models.Radio, { foreignKey: 'radio_id', as: 'radio' }),
+    this.belongsTo(models.Programacao, { foreignKey: 'programacao_id', as: 'programacao' })
+  }
 }
 
 export default Pedido;

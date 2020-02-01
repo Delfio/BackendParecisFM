@@ -6,8 +6,16 @@ const NotificationsSchema = new mongoose.Schema({
     required: true,
   },
   hora: {
-    type: Date,
+    type: String,
     required: true,
+  },
+  programa: {
+    type: Number,
+    required: true
+  },
+  dia: {
+    type: String,
+    required: true
   },
   radio: {
     type: Number,

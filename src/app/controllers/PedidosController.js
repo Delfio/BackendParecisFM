@@ -8,6 +8,7 @@ import Dias from '../models/Dia';
 import Radio from '../models/Radio';
 
 import { Op } from 'sequelize'
+import Notifications from '../schemas/notifications'
 
 import {
   parseISO, 
@@ -23,10 +24,8 @@ import {
   isTuesday, //terça
   isWednesday //quarta
 } from 'date-fns';
-import { zonedTimeToUtc } from 'date-fns-tz';
 import pt from 'date-fns/locale/pt';
  
-import Notifications from '../schemas/notifications'
 
 class PedidosController {
   async store(req, res) {
@@ -57,16 +56,19 @@ class PedidosController {
       }
 
       // Formatando para a notificação
-      const dateFormated =  format(
+      const dateFormated = format(
         parseISO(data),
         "'Dia' dd 'de' MMMM', às ' HH:mm'h'",
         { locale: pt }
       );
 
+      //Pegando a hora atual - 18
       const isHourAtual = getHours(new Date(data));
 
+      // Formatando ela para 18:00
       const isHourFormated = `${isHourAtual}:00`
 
+      //Verificando qual dia esta data pertence
       const dia = () => {
         if( isMonday(parseISO(data))){
           return "Segunda-Feira";
@@ -92,6 +94,7 @@ class PedidosController {
         }
       }
 
+      //executando a função e pegando seu valor
       const valor = dia();
 
       //Programação que vai estar tocando neste horario
@@ -113,47 +116,41 @@ class PedidosController {
             where: { "id": RadioID }
           }
         ],
-      })
+      });
 
-      console.log(programacao);
-
-      // console.log(isWednesday(parseISO(data)));
-      
-      // Hora inicial - 14:00 - 15:00
-      const hourStart = startOfHour(parseISO(data))
-
-      if( isBefore(hourStart, new Date())){
-        return res.status(400).json({error: 'Data Inválida'})
-      }
+      const idProgramacao = programacao[0].id;
 
       /**
       * Create a notification in MySQL
       */
-      // const notificacao = await Pedidos.create({
-      //   nome,
-      //   idade,
-      //   telefone,
-      //   musica,
-      //   artista,
-      //   data: data,
-      //   radio_id: id
-      // });
-
-      // const message = `Novo pedido de ${nome} do telefone: ${telefone}. Musica: "${musica}", do artista: ${artista}, ${formattedDate}`
-
-      // console.log(message);
+      const notificacao = await Pedidos.create({
+        nome,
+        idade,
+        telefone,
+        musica,
+        artista,
+        data: data,
+        radio_id: RadioID,
+        programacao_id: idProgramacao
+      });
 
       /**
       * Notify locutor with a radio dashboard
       */
-      
-      // await Notifications.create({
-      //   content: 'Novo pedido de música: xxxxxxxxxxxxx',
-      //   radio: id
-      // })
 
-      // return res.json(notificacao);
-      return res.json({ok: true})
+      const message = `Novo pedido de ${nome} do telefone: ${telefone}. Musica: "${musica}", do artista: ${artista}, as: ${dateFormated}`
+
+      // console.log(message);
+      
+      await Notifications.create({
+        content: message,
+        hora: isHourFormated,
+        dia: valor,
+        programa: idProgramacao,
+        radio: RadioID
+      })
+
+      return res.json(notificacao)
     }catch (err) {
         return res.status(500).json({error: err.message})
     }
