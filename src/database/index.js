@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import Sequelize from 'sequelize';
 
 import mongoose from 'mongoose';
@@ -44,7 +46,7 @@ class Database {
   }
 
   mongo() {
-    this.mongoConnectioon = mongoose.connect('mongodb+srv://rootParecisFM:sefode12@cluster0-um3uc.mongodb.net/parecisfm?retryWrites=true&w=majority',
+    this.mongoConnectioon = mongoose.connect(process.env.mongo_URL,
     {
       useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true
     })
