@@ -1,7 +1,29 @@
 import * as Yup from 'yup';
 import Pedidos from '../models/Pedidos';
-import {parseISO, format, isBefore, startOfHour} from 'date-fns';
-import getHours from 'date-fns/getHours'
+
+import Programacao from '../models/Programacao';
+
+import Dias from '../models/Dia';
+
+import Radio from '../models/Radio';
+
+import { Op } from 'sequelize'
+
+import {
+  parseISO, 
+  format, 
+  isBefore, 
+  startOfHour, 
+  getHours,
+  isFriday, //sexta
+  isMonday,  //segunda
+  isSaturday, //sábado
+  isSunday, //Domingo
+  isThursday, //quinta
+  isTuesday, //terça
+  isWednesday //quarta
+} from 'date-fns';
+import { zonedTimeToUtc } from 'date-fns-tz';
 import pt from 'date-fns/locale/pt';
  
 import Notifications from '../schemas/notifications'
@@ -27,7 +49,7 @@ class PedidosController {
       }
 
       const { nome, idade, telefone, musica, artista, data } = req.body;
-      const { id } = req.params;
+      const { id : RadioID } = req.params;
 
       //Verificando se a data e hora já passou
       if( isBefore(parseISO(data), new Date())){
@@ -40,6 +62,62 @@ class PedidosController {
         "'Dia' dd 'de' MMMM', às ' HH:mm'h'",
         { locale: pt }
       );
+
+      const isHourAtual = getHours(new Date(data));
+
+      const isHourFormated = `${isHourAtual}:00`
+
+      const dia = () => {
+        if( isMonday(parseISO(data))){
+          return "Segunda-Feira";
+          
+        }else if(isTuesday(parseISO(data))){
+          return "Terça-Feira";
+  
+        }else if(isWednesday(parseISO(data))){
+          return "Quarta-Feira";
+
+        }else if(isThursday(parseISO(data))){
+          return "Quinta-Feira";
+
+        }else if(isFriday(parseISO(data))){
+          return "Sexta-Feita";
+
+        }else if(isSaturday(parseISO(data))){
+          return "Sabado";
+          
+        }else if(isSunday(parseISO(data))){
+          return "Domingo";
+          
+        }
+      }
+
+      const valor = dia();
+
+      //Programação que vai estar tocando neste horario
+      const programacao = await Programacao.findAll({
+        where: { 
+          horario: {
+            [Op.like]: `%${isHourFormated}%`
+          }
+        },
+        include: [
+          {
+            model: Dias,
+            as: 'dia',
+            where: { "nome": valor }
+          },
+          {
+            model: Radio,
+            as: 'radio',
+            where: { "id": RadioID }
+          }
+        ],
+      })
+
+      console.log(programacao);
+
+      // console.log(isWednesday(parseISO(data)));
       
       // Hora inicial - 14:00 - 15:00
       const hourStart = startOfHour(parseISO(data))

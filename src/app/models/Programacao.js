@@ -3,11 +3,7 @@ import Sequelize, { Model } from 'sequelize';
 class Programacao extends Model {
   static init(sequelize) {
     super.init({
-      horario: Sequelize.STRING,
-      user_id: Sequelize.INTEGER,
-      radio_id: Sequelize.INTEGER,
-      programa_id: Sequelize.INTEGER,
-      dia_id: Sequelize.INTEGER
+      horario: Sequelize.STRING
     }, 
       {
         sequelize,
@@ -15,6 +11,13 @@ class Programacao extends Model {
     );
 
     return this;
+  }
+
+  static associate(models){
+    this.belongsTo(models.Radio, { foreignKey: 'radio_id', as: 'radio' }),
+    this.belongsTo(models.User, { foreignKey: 'user_id', as: 'cadastrante' }),
+    this.belongsTo(models.Programa, { foreignKey: 'programa_id', as: 'programa' }),
+    this.belongsTo(models.Dias, { foreignKey: 'dia_id', as: 'dia' })
   }
 }
 

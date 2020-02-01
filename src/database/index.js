@@ -36,9 +36,11 @@ class Database {
   }
 
   init() {
-    this.connection = new Sequelize(databaseConfig);
+    this.connection = new Sequelize(databaseConfig); // Conexão com a base de dados, que está sendo esperada pela "init()" nos models!
 
-    models.map(model =>  model.init(this.connection));
+    models
+      .map(model => model.init(this.connection)) // for para acessar o array das classes e seus metodos
+      .map(model => model.associate && model.associate(this.connection.models));
   }
 
   mongo() {
