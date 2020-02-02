@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import User from '../models/User';
-
+import Radio from '../models/Radio';
 
 class UserController{
 
@@ -8,7 +8,8 @@ class UserController{
     const schema = Yup.object().shape({
       name: Yup.string().required('nome é obrigatório'),
       email: Yup.string().email('insira um email válido').required('O email é obrigatório'),
-      password: Yup.string().required('Senha é obrigatória').min(6, 'Minimo de 6 digitos')
+      password: Yup.string().required('Senha é obrigatória').min(6, 'Minimo de 6 digitos'),
+      locutor: Yup.boolean()
     })
 
     try{
@@ -23,18 +24,26 @@ class UserController{
         return res.status(400).json({error: 'Email já em uso'})
       }
 
-      const { id, name, email, radio } = await User.create({
+      const RadioRequest = await Radio.findByPk(req.body.radio_id);
+
+      if(!RadioRequest){
+        return res.status(400).json({error: 'Radio não existe'})
+      }
+
+      const { id, name, email, radio, locutor } = await User.create({
         name: req.body.name,
         email: req.body.email,
         radio_id: req.body.radio_id,
-        password: req.body.password
+        password: req.body.password,
+        locutor: req.body.locutor? true : false
       });
 
       return res.json({
         id,
         name,
         email,
-        radio
+        radio,
+        locutor
       });
 
     }catch(err){

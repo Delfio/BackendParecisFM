@@ -15,7 +15,7 @@ class Programacao extends Model {
 
   static associate(models){
     this.belongsTo(models.Radio, { foreignKey: 'radio_id', as: 'radio' }),
-    this.belongsTo(models.User, { foreignKey: 'user_id', as: 'cadastrante' }),
+    this.belongsTo(models.User, { foreignKey: 'user_id', as: 'locutor' }),
     this.belongsTo(models.Programa, { foreignKey: 'programa_id', as: 'programa' }),
     this.belongsTo(models.Dias, { foreignKey: 'dia_id', as: 'dia' })
   }

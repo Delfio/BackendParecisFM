@@ -2,6 +2,7 @@ import Radio from '../models/Radio';
 import Banner from '../models/Banner';
 import Programacao from '../models/Programacao';
 import Dias from '../models/Dia';
+import User from '../models/User';
 
 import { Op } from 'sequelize'
 
@@ -26,6 +27,10 @@ class PrincipalController {
 
     const { data } = req.query
 
+    // if( isBefore(parseISO(data), new Date())){
+    //   return res.status(400).json({error: 'Data Anterior a atual'})
+    // }
+
     //Pegando a hora atual do cliente - 18
     const isHourAtual = getHours(new Date(data));
 
@@ -45,7 +50,7 @@ class PrincipalController {
     }
     const horanessaporra = isHourFormated();
 
-    // // //Verificando qual dia esta data pertence
+    //Verificando qual dia esta data pertence
     const dia = () => {
       if( isMonday(parseISO(data))){
         return "Segunda-Feira";
@@ -73,7 +78,7 @@ class PrincipalController {
     //executando a função e pegando seu valor
     const diaAtual = dia();
 
-
+    const {id} = await Dias.findOne({nome: diaAtual})
 
     //Banners e infos da rádio
     const radio = await Radio.findAll({
@@ -104,22 +109,19 @@ class PrincipalController {
           where:{ 
             horario: {
               [Op.like]: `%${horanessaporra}%`
-            }
+            },
+            dia_id: id
           },
           include: [
             {
-              model: Dias,
-              as: 'dia',
-              where: { 
-                nome: diaAtual
-               }
+              model: User,
+              as: 'locutor',
+              attributes: [ 'name', 'email' ]
             }
           ]
         }
       ]
     });
-
-
 
     return res.json(radio)
   }
