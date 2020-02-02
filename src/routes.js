@@ -8,6 +8,9 @@ import UserController from './app/controllers/UserController';
 import SessionsController from './app/controllers/SessionsController';
 
 import BannerController from './app/controllers/BannerController';
+
+import FotoPerfilController from './app/controllers/FotoPerfilLocutor';
+
 import RadioController from './app/controllers/RadioController';
 
 import PedidosController from './app/controllers/PedidosController';
@@ -43,8 +46,10 @@ routes.post('/estados', EstadosController.store)
 routes.post('/cidades', CidadeController.store)
 
 routes.put('/users', UserController.update);
+
 routes.post('/radio', RadioController.store);
 
 routes.post('/banner/:id', upload.single('file'), BannerController.store);
+routes.post('/profile', upload.single('file'), FotoPerfilController.store)
 
 export default routes;

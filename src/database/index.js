@@ -7,6 +7,8 @@ import mongoose from 'mongoose';
 import databaseConfig from '../config/database';
 
 import User from '../app/models/User';
+import FotoLocutor from '../app/models/FotoLocutor';
+
 import Banner from '../app/models/Banner';
 import Radio from '../app/models/Radio';
 import Pedido from '../app/models/Pedidos';
@@ -28,7 +30,8 @@ const models = [
   Cidade, 
   Dia, 
   Programacao,
-  Programa
+  Programa,
+  FotoLocutor
 ];
 
 class Database {

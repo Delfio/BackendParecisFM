@@ -29,6 +29,10 @@ class User extends Model {
   checkPassword(password){
     return bcrypt.compare(password, this.password_hash);
   }
+  static associate(models) {
+    //Relacionamento de fk
+    this.belongsTo(models.Foto_locutors, { foreignKey: "foto_locutor_id", as: "avatar" });
+  }
 }
 
 export default User;
