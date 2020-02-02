@@ -7,6 +7,12 @@ class LocutorController {
     try {
       const {userId} = req;
       const { user_id, foto_locutor_id } = req.body;
+
+      const fotoExists = await FotoLocutor.findByPk(foto_locutor_id);
+
+      if(!fotoExists) {
+        return res.status(404).json({error: 'Imagem not Found'})
+      }
   
       const userLogado =  await User.findByPk(userId, { attributes: ['id', 'name', 'adm', 'locutor', 'radio_id'] });
       const userRequired =  await User.findByPk(user_id);
