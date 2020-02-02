@@ -10,6 +10,7 @@ import SessionsController from './app/controllers/SessionsController';
 import BannerController from './app/controllers/BannerController';
 
 import FotoPerfilController from './app/controllers/FotoPerfilLocutor';
+import LocutorController from './app/controllers/LocutorController';
 
 import RadioController from './app/controllers/RadioController';
 
@@ -50,6 +51,8 @@ routes.put('/users', UserController.update);
 routes.post('/radio', RadioController.store);
 
 routes.post('/banner/:id', upload.single('file'), BannerController.store);
-routes.post('/profile', upload.single('file'), FotoPerfilController.store)
+routes.post('/imageProfile', upload.single('file'), FotoPerfilController.store)
+routes.put('/profileLocutor', LocutorController.update)
+
 
 export default routes;
