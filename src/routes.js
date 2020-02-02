@@ -2,6 +2,8 @@ import { Router } from 'express';
 import multer from 'multer';
 import MulterConfig from './config/multer'
 
+import PrincipalController from './app/controllers/PrincipalController';
+
 import UserController from './app/controllers/UserController';
 import SessionsController from './app/controllers/SessionsController';
 
@@ -27,6 +29,8 @@ routes.post('/users', UserController.store);
 routes.post('/sessions', SessionsController.store);
 
 routes.post('/musica/:id', PedidosController.store);
+
+routes.get('/principal/:id', PrincipalController.index);
 
 routes.use(authMiddlewares);
 
