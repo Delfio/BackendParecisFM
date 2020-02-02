@@ -9,7 +9,7 @@ import databaseConfig from '../config/database';
 import User from '../app/models/User';
 import Banner from '../app/models/Banner';
 import Radio from '../app/models/Radio';
-import Pedidos from '../app/models/Pedidos';
+import Pedido from '../app/models/Pedidos';
 
 
 import Estado from '../app/models/Estado';
@@ -23,7 +23,7 @@ const models = [
   User, 
   Banner, 
   Radio, 
-  Pedidos, 
+  Pedido, 
   Estado, 
   Cidade, 
   Dia, 
