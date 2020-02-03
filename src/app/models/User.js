@@ -9,7 +9,6 @@ class User extends Model {
       email: Sequelize.STRING,
       password: Sequelize.VIRTUAL,
       password_hash: Sequelize.STRING,
-      radio_id: Sequelize.INTEGER,
       locutor: Sequelize.BOOLEAN
     }, 
       {
@@ -32,6 +31,7 @@ class User extends Model {
   static associate(models) {
     //Relacionamento de fk
     this.belongsTo(models.Foto_locutors, { foreignKey: "foto_locutor_id", as: "avatar" });
+    this.belongsTo(models.Radio, { foreignKey: "radio_id", as: "radio" });
   }
 }
 

@@ -1,7 +1,43 @@
 import User from '../models/User';
 import FotoLocutor from '../models/FotoLocutor';
+import Radio from '../models/Radio';
+import Cidade from '../models/Cidade';
 
 class LocutorController {
+
+  async index(req, res){
+    try{
+
+      const user = await User.findAll({
+        where: { locutor: true },
+        attributes:['name', 'email', 'radio_id'],
+        include:[
+          {
+            model: FotoLocutor,
+            as: 'avatar',
+            attributes: [ 'name', 'path', 'url' ]
+          },
+          {
+            model: Radio,
+            as: 'radio',
+            attributes:['id','name', 'link'],
+            include: [
+              {
+                model: Cidade,
+                as: 'cidade',
+                attributes:['nome'],
+              }
+            ]
+          }
+        ]
+      });
+
+      return res.json(user)
+
+    } catch (err){
+      return res.status(500).json({error: err.message});
+    }
+  }
 
   async update(req, res){
     try {

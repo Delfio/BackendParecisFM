@@ -5,7 +5,6 @@ class Radio extends Model {
     super.init({
       name: Sequelize.STRING,
       link: Sequelize.STRING,
-      cidade_id: Sequelize.INTEGER,
     }, 
       {
         sequelize,
@@ -21,6 +20,8 @@ class Radio extends Model {
     this.hasMany(models.Banner, {as: 'banner1'});
     this.hasMany(models.Banner, {as: 'banner2'});
     this.hasMany(models.Pedido, {as: 'pedido'});
+
+    this.belongsTo(models.Cidade, { foreignKey: "cidade_id", as: "cidade" });
   }
 }
 

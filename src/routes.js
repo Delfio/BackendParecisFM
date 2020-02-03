@@ -53,6 +53,7 @@ routes.post('/radio', RadioController.store);
 routes.post('/banner/:id', upload.single('file'), BannerController.store);
 routes.post('/imageProfile', upload.single('file'), FotoPerfilController.store)
 routes.put('/profileLocutor', LocutorController.update)
+routes.get('/locutores', LocutorController.index)
 
 
 export default routes;
