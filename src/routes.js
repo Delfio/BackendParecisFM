@@ -38,6 +38,8 @@ routes.post('/musica/:id', PedidosController.store);
 routes.get('/principal', RadioController.index);
 routes.get('/principal/:id', PrincipalController.index);
 
+routes.get('/programacaos/:id', ProgramacaoController.index);
+
 routes.use(authMiddlewares);
 
 routes.post('/programa', ProgramaController.store);
@@ -47,6 +49,9 @@ routes.delete('/programa/:id',ProgramaController.delete);
 
 routes.post('/dia', DiaController.store);
 routes.post('/programacaos', ProgramacaoController.store);
+routes.get('/programacaos', ProgramacaoController.index);
+routes.delete('/programacaos/:id', ProgramacaoController.delete);
+routes.put('/programacaos/:id', ProgramacaoController.update);
 
 routes.post('/estados', EstadosController.store)
 routes.post('/cidades', CidadeController.store)
