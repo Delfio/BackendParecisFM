@@ -30,6 +30,25 @@ class CidadeController {
 
     }
   }
+
+  async update(req, res){
+    try {
+
+      const { id } = req.params;
+
+      const cidadeExists = await Cidade.findByPk(id);
+
+      if(!cidadeExists){
+        return res.status(404).json({Error: 'Cidade não existe'})
+      }
+
+      await cidadeExists.update(req.body);
+
+      return res.json(cidadeExists);
+    } catch (err) {
+      return res.status(500).json({error: err.message})
+    }
+  }
 }
 
 export default new CidadeController();

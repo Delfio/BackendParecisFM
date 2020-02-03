@@ -14,6 +14,7 @@ import FotoPerfilController from './app/controllers/FotoPerfilLocutor';
 import LocutorController from './app/controllers/LocutorController';
 
 import RadioController from './app/controllers/RadioController';
+import PromocaoController from './app/controllers/PromocaoController';
 
 import PedidosController from './app/controllers/PedidosController';
 
@@ -52,6 +53,8 @@ routes.post('/programacaos', ProgramacaoController.store);
 routes.get('/programacaos', ProgramacaoController.index);
 routes.delete('/programacaos/:id', ProgramacaoController.delete);
 routes.put('/programacaos/:id', ProgramacaoController.update);
+
+routes.post('/promocao/:id', PromocaoController.store);
 
 routes.post('/estados', EstadosController.store)
 routes.post('/cidades', CidadeController.store)

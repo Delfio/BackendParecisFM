@@ -14,6 +14,7 @@ import Icon from '../app/models/IconRadio';
 import Radio from '../app/models/Radio';
 import Pedido from '../app/models/Pedidos';
 
+import Promocao from '../app/models/Promocao';
 
 import Estado from '../app/models/Estado';
 import Cidade from '../app/models/Cidade';
@@ -26,7 +27,8 @@ const models = [
   User, 
   Banner, 
   Icon,
-  Radio, 
+  Radio,
+  Promocao, 
   Pedido, 
   Estado, 
   Cidade, 

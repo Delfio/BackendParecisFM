@@ -10,7 +10,11 @@ module.exports = {
         primaryKey: true,
       },
       nome: {
-        type: Sequelize.ENUM(['1', '2', '3']),
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      link: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
       radio_id: {

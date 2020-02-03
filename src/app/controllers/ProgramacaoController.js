@@ -5,7 +5,6 @@ import Dia from '../models/Dia';
 
 import User from '../models/User';
 import Programa from '../models/Programa';
-import { Op } from 'sequelize';
 
 class ProgramacaoController {
 
