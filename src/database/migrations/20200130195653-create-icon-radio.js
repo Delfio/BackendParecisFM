@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('icon', {
+    return queryInterface.createTable('icons', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -18,13 +18,6 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      radio_id: {
-        type: Sequelize.INTEGER,
-        references: { model: 'radios', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
-        allowNull: true,
-      },
       created_at:{
         type: Sequelize.DATE,
         allowNull: false,
@@ -37,7 +30,7 @@ module.exports = {
   },
 
   down: (queryInterface) => {
-    return queryInterface.dropTable('icon');
+    return queryInterface.dropTable('icons');
 
   }
 };

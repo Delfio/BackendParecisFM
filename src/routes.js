@@ -8,6 +8,7 @@ import UserController from './app/controllers/UserController';
 import SessionsController from './app/controllers/SessionsController';
 
 import BannerController from './app/controllers/BannerController';
+import IconController from './app/controllers/IconController';
 
 import FotoPerfilController from './app/controllers/FotoPerfilLocutor';
 import LocutorController from './app/controllers/LocutorController';
@@ -34,13 +35,13 @@ routes.post('/sessions', SessionsController.store);
 
 routes.post('/musica/:id', PedidosController.store);
 
+routes.get('/principal', RadioController.index);
 routes.get('/principal/:id', PrincipalController.index);
 
 routes.use(authMiddlewares);
 
 routes.post('/programa', ProgramaController.store);
 routes.post('/dia', DiaController.store);
-
 routes.post('/programacaos', ProgramacaoController.store);
 
 routes.post('/estados', EstadosController.store)
@@ -49,8 +50,10 @@ routes.post('/cidades', CidadeController.store)
 routes.put('/users', UserController.update);
 
 routes.post('/radio', RadioController.store);
+routes.put('/radio/:id', RadioController.update);
 
 routes.post('/banner/:id', upload.single('file'), BannerController.store);
+routes.post('/icon', upload.single('file'), IconController.store);
 routes.post('/imageProfile', upload.single('file'), FotoPerfilController.store)
 routes.put('/profileLocutor', LocutorController.update)
 routes.get('/locutores', LocutorController.index)

@@ -10,6 +10,7 @@ import User from '../app/models/User';
 import FotoLocutor from '../app/models/FotoLocutor';
 
 import Banner from '../app/models/Banner';
+import Icon from '../app/models/IconRadio';
 import Radio from '../app/models/Radio';
 import Pedido from '../app/models/Pedidos';
 
@@ -24,6 +25,7 @@ import Programa from '../app/models/Programa';
 const models = [
   User, 
   Banner, 
+  Icon,
   Radio, 
   Pedido, 
   Estado, 
