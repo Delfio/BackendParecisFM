@@ -110,6 +110,36 @@ class RadioController{
 
     }
   }
+
+  async delete(req, res){
+    try{
+
+      const {userId} = req;
+      const { id : RadioID } = req.params;
+      
+      const userLogado =  await User.findByPk(userId, { attributes: ['id', 'name', 'adm', 'radio_id'] });
+
+      const userADM = userLogado.dataValues;
+
+      if(!userADM.adm){
+        return res.status(400).json({error: 'Não autorizado'})
+      }
+
+      const radioExists = await Radio.findByPk(RadioID);
+
+      if(!radioExists){
+        return res.status(404).json({error: 'Radio Not Found'})
+      };
+
+      await radioExists.destroy();
+
+      return res.status(200).json({ok: 'Sucess'})
+
+    } catch(err){
+      return res.status(500).json({error: err.message})
+
+    }
+  }
 }
 
 export default new RadioController();

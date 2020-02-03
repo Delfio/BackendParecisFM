@@ -51,6 +51,7 @@ routes.put('/users', UserController.update);
 
 routes.post('/radio', RadioController.store);
 routes.put('/radio/:id', RadioController.update);
+routes.delete('/radio/:id', RadioController.delete);
 
 routes.post('/banner/:id', upload.single('file'), BannerController.store);
 routes.post('/icon', upload.single('file'), IconController.store);
