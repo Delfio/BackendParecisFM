@@ -41,6 +41,10 @@ routes.get('/principal/:id', PrincipalController.index);
 routes.use(authMiddlewares);
 
 routes.post('/programa', ProgramaController.store);
+routes.get('/programa',ProgramaController.index);
+routes.put('/programa/:id',ProgramaController.update);
+routes.delete('/programa/:id',ProgramaController.delete);
+
 routes.post('/dia', DiaController.store);
 routes.post('/programacaos', ProgramacaoController.store);
 

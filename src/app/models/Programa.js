@@ -3,8 +3,7 @@ import Sequelize, { Model } from 'sequelize';
 class Programa extends Model {
   static init(sequelize) {
     super.init({
-      nome: Sequelize.STRING,
-      user_id: Sequelize.INTEGER,
+      nome: Sequelize.STRING
     }, 
       {
         sequelize,
@@ -12,6 +11,10 @@ class Programa extends Model {
     );
 
     return this;
+  }
+  static associate(models){
+
+    this.belongsTo(models.User, { foreignKey: "user_id", as: "criador" });
   }
 }
 
