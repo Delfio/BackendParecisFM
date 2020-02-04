@@ -20,6 +20,8 @@ import BannerPromocao from '../app/models/BannerPromocao';
 import Top3 from '../app/models/Top3';
 import ImageTop3 from '../app/models/ImagemTop3';
 
+import Contato from '../app/models/Contato';
+
 import Estado from '../app/models/Estado';
 import Cidade from '../app/models/Cidade';
 
@@ -39,6 +41,7 @@ const models = [
   ImageTop3,
   Estado, 
   Cidade, 
+  Contato,
   Dia, 
   Programacao,
   Programa,

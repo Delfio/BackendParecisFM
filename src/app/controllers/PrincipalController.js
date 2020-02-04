@@ -3,6 +3,10 @@ import Banner from '../models/Banner';
 import Programacao from '../models/Programacao';
 import Dias from '../models/Dia';
 import User from '../models/User';
+import Contato from '../models/Contato';
+import Top3 from '../models/Top3';
+import ImagemTop3s from '../models/ImagemTop3';
+import Contato from '../models/Contato';
 
 import { Op } from 'sequelize'
 
@@ -119,6 +123,28 @@ class PrincipalController {
               as: 'locutor',
               attributes: [ 'name', 'email' ]
             }
+          ]
+        },
+        {
+          model: Top3,
+          as: 'top3',
+          limit: 3,
+          order:[
+            ['id', 'DESC']
+          ],
+          include:[
+            {
+              model: ImagemTop3s,
+              as: 'image'
+            }
+          ]
+        },
+        {
+          model: Contato,
+          as: 'contato',
+          limit: 3,
+          order:[
+            ['id', 'DESC']
           ]
         }
       ]

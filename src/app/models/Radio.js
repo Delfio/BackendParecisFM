@@ -20,6 +20,8 @@ class Radio extends Model {
     this.hasMany(models.Banner, {as: 'banner1'});
     this.hasMany(models.Banner, {as: 'banner2'});
     this.hasMany(models.Pedido, {as: 'pedido'});
+    this.hasMany(models.Contato, {as: 'contato'});
+    this.hasMany(models.Top3, {as: 'top3'});
 
     this.belongsTo(models.Cidade, { foreignKey: "cidade_id", as: "cidade" });
     this.belongsTo(models.Icon, { foreignKey: "icon_id", as: "icon" });

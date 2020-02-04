@@ -21,6 +21,8 @@ import PedidosController from './app/controllers/PedidosController';
 import Top3Controller from './app/controllers/Top3Controller';
 import ImageTop3Controller from './app/controllers/ImageTop3Controller';
 
+import ContatoController from './app/controllers/ContatoController';
+
 import EstadosController from './app/controllers/EstadosController';
 import CidadeController from './app/controllers/CidadeController';
 
@@ -71,6 +73,10 @@ routes.post('/top3/:id', Top3Controller.store);
 routes.post('/imageTop3', upload.single('file'), ImageTop3Controller.store);
 routes.put('/top3/:id', Top3Controller.update);
 routes.get('/top3', Top3Controller.index);
+
+routes.post('/contato/:id', ContatoController.store);
+routes.put('/contato/:id', ContatoController.update);
+routes.delete('/contato/:id', ContatoController.delete);
 
 routes.post('/estados', EstadosController.store)
 routes.post('/cidades', CidadeController.store)
