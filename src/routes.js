@@ -18,6 +18,8 @@ import PromocaoController from './app/controllers/PromocaoController';
 import BannerPromocaoController from './app/controllers/BannerPromocaoController';
 
 import PedidosController from './app/controllers/PedidosController';
+import Top3Controller from './app/controllers/Top3Controller';
+import ImageTop3Controller from './app/controllers/ImageTop3Controller';
 
 import EstadosController from './app/controllers/EstadosController';
 import CidadeController from './app/controllers/CidadeController';
@@ -42,6 +44,8 @@ routes.get('/principal/:id', PrincipalController.index);
 
 routes.get('/programacaos/:id', ProgramacaoController.index);
 
+routes.get('/top3/:id', Top3Controller.index);
+
 routes.get('/promocao/:id', PromocaoController.index);
 
 routes.use(authMiddlewares);
@@ -63,6 +67,10 @@ routes.delete('/promocao/:id', PromocaoController.delete);
 routes.get('/promocao', PromocaoController.index);
 routes.put('/promocao/:id', PromocaoController.update);
 
+routes.post('/top3/:id', Top3Controller.store);
+routes.post('/imageTop3', upload.single('file'), ImageTop3Controller.store);
+routes.put('/top3/:id', Top3Controller.update);
+routes.get('/top3', Top3Controller.index);
 
 routes.post('/estados', EstadosController.store)
 routes.post('/cidades', CidadeController.store)
