@@ -16,6 +16,10 @@ class RadioController{
             {
               model: Cidade,
               as: 'cidade'
+            },
+            {
+              model: Icon,
+              as: 'icon'
             }
           ]
         }

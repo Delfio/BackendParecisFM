@@ -83,7 +83,12 @@ class PrincipalController {
     const diaAtual = dia();
 
     //Pegar o id do dia atual
-    const {id} = await Dias.findOne({nome: diaAtual})
+    const {id} = await Dias.findOne({
+      where: {nome: diaAtual}
+    })
+
+
+    console.log(id);
 
     //Banners e infos da rádio
     const radio = await Radio.findAll({
