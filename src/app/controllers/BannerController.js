@@ -8,7 +8,7 @@ class BannerController {
     try{
       const { originalname: name, filename: path } = req.file;
 
-      const { id } = req.params;
+      const { id, opcao } = req.params;
 
       const {userId} = req;
 
@@ -21,7 +21,8 @@ class BannerController {
       const file = await Banner.create({
         name,
         path,
-        radio_id: id
+        radio_id: id,
+        type: opcao
       });
   
       return res.json(file);
