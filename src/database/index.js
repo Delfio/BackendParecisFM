@@ -15,6 +15,7 @@ import Radio from '../app/models/Radio';
 import Pedido from '../app/models/Pedidos';
 
 import Promocao from '../app/models/Promocao';
+import BannerPromocao from '../app/models/BannerPromocao';
 
 import Estado from '../app/models/Estado';
 import Cidade from '../app/models/Cidade';
@@ -29,6 +30,7 @@ const models = [
   Icon,
   Radio,
   Promocao, 
+  BannerPromocao,
   Pedido, 
   Estado, 
   Cidade, 

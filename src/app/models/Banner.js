@@ -7,7 +7,6 @@ class Banner extends Model {
     super.init({
       name: Sequelize.STRING,
       path: Sequelize.STRING,
-      radio_id: Sequelize.INTEGER,
       type: Sequelize.BOOLEAN,
       url: {
         type: Sequelize.VIRTUAL,
@@ -24,6 +23,11 @@ class Banner extends Model {
 
 
     return this;
+  }
+
+  static associate(models) {
+    //Relacionamento de fk
+    this.belongsTo(models.Radio, { foreignKey: "radio_id", as: "radio" });
   }
 
 }

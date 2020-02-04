@@ -15,6 +15,7 @@ import LocutorController from './app/controllers/LocutorController';
 
 import RadioController from './app/controllers/RadioController';
 import PromocaoController from './app/controllers/PromocaoController';
+import BannerPromocaoController from './app/controllers/BannerPromocaoController';
 
 import PedidosController from './app/controllers/PedidosController';
 
@@ -41,6 +42,8 @@ routes.get('/principal/:id', PrincipalController.index);
 
 routes.get('/programacaos/:id', ProgramacaoController.index);
 
+routes.get('/promocao/:id', PromocaoController.index);
+
 routes.use(authMiddlewares);
 
 routes.post('/programa', ProgramaController.store);
@@ -55,6 +58,11 @@ routes.delete('/programacaos/:id', ProgramacaoController.delete);
 routes.put('/programacaos/:id', ProgramacaoController.update);
 
 routes.post('/promocao/:id', PromocaoController.store);
+routes.post('/bannerPromocao/:id', upload.single('file'), BannerPromocaoController.store);
+routes.delete('/promocao/:id', PromocaoController.delete);
+routes.get('/promocao', PromocaoController.index);
+routes.put('/promocao/:id', PromocaoController.update);
+
 
 routes.post('/estados', EstadosController.store)
 routes.post('/cidades', CidadeController.store)

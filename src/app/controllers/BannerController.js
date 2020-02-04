@@ -14,8 +14,6 @@ class BannerController {
 
       const user = await User.findByPk(userId);
 
-      console.log(id);
-
       if(!user.adm && (user.radio_id != id)){
         return res.status(401).json({error: 'Não autorizado'})
       }

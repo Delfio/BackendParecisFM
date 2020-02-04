@@ -1,9 +1,71 @@
 import * as Yup from 'yup'
 import Promocao from '../models/Promocao';
+import BannerPromocao from '../models/BannerPromocao';
 import User from '../models/User';
 import Radio from '../models/Radio';
 
+import {Op} from 'sequelize'
+
 class PromocaoController {
+
+  async index (req, res){
+    try {
+      const { id } = req.params;
+
+      if(id){
+        const promocao = await BannerPromocao.findAll({
+          attributes: ['url', 'path', 'id', 'promocao_id'],
+          include: [
+            {
+              model: Promocao,
+              as: 'promocao',
+              where: {
+                radio_id: id
+              }
+            }
+          ]
+        });
+
+        return res.json(promocao)
+      }
+
+      const promocao = await BannerPromocao.findAll({
+        attributes: ['url', 'path', 'id', 'promocao_id'],
+        include: [
+          {
+            model: Promocao,
+            as: 'promocao',
+            where: {
+              id: {
+                [Op.ne]: null
+              }
+            },
+            include: [
+              {
+                model: User,
+                as: 'cadastrante',
+                attributes: ['id', 'name', 'email'],
+                include: [
+                  {
+                    model: Radio,
+                    as: 'radio',
+                    attributes: ['name']
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      });
+
+      return res.json(promocao)
+
+
+    } catch (err) {
+      return res.status(500).json({error: err.message})
+
+    }
+  }
 
   async store(req, res){
     const schema = Yup.object().shape({
@@ -36,7 +98,8 @@ class PromocaoController {
       const promocao = await Promocao.create({
         nome: req.body.nome,
         link: req.body.link,
-        radio_id: radio_id
+        radio_id: radio_id,
+        user_id: userId
       });
 
       return res.json(promocao);
@@ -45,6 +108,66 @@ class PromocaoController {
       return res.status(500).json({error: err.message})
     }
 
+  }
+
+  async update(req, res){
+    const schema = Yup.object().shape({
+      nome: Yup.string(),
+      link: Yup.string().url()
+    })
+    try {
+      if(!(await schema.isValid(req.body))){
+        return res.status(400).json({error: 'Verifique seus dados'})
+      }
+
+      const { userId } = req;
+      const { id: promocaoID } = req.params;
+      
+      const userLogado = await User.findByPk(userId);
+      const promocoesRequest = await Promocao.findByPk(promocaoID);
+
+      if(!promocoesRequest){
+        return res.status(404).json({error: 'Not found'})
+      }
+
+      if(promocoesRequest.user_id != userId && !userLogado.adm && promocoesRequest.radio_id != userLogado.radio_id){
+        return res.status(400).json({error: false})
+      }
+
+      await promocoesRequest.update(req.body);
+
+      return res.json(promocoesRequest);
+
+    } catch (err){
+      return res.status(500).json({error: err.message})
+    }
+  }
+
+  async delete(req, res){
+    try {
+
+      const { id } = req.params;
+      const {userId} = req;
+
+      const userLogado = await User.findByPk(userId);
+      const promocaoExists = await Promocao.findByPk(id);
+
+      if(!promocaoExists) {
+        return res.status(404).json({error: 'Promoção não existe'})
+      }
+
+      if((!userLogado.adm && promocaoExists.user_id != userLogado.id) && promocaoExists.radio_id != userLogado.id){
+        return res.status(400).json({erro: false})
+      };
+
+      await promocaoExists.destroy();
+
+      return res.json({ok: true})
+
+    } catch (err) {
+      return res.status(500).json({error: err.message})
+
+    }
   }
 
 }

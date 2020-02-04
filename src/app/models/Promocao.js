@@ -16,7 +16,8 @@ class Promocoe extends Model {
 
   static associate(models){
     this.belongsTo(models.Radio, { foreignKey: 'radio_id', as: 'radio' });
-    this.belongsTo(models.User, { foreignKey: 'user_id', as: 'locutor' })
+    this.belongsTo(models.User, { foreignKey: 'user_id', as: 'cadastrante' });
+
   }
 }
 
