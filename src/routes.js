@@ -40,6 +40,7 @@ routes.post('/users', UserController.store);
 routes.post('/sessions', SessionsController.store);
 
 routes.post('/musica/:id', PedidosController.store);
+routes.post('/musica/:id/:pedidoId', PedidosController.store);
 
 routes.get('/principal', RadioController.index);
 routes.get('/principal/:id', PrincipalController.index);
