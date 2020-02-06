@@ -8,6 +8,7 @@ class Pedido extends Model {
       telefone: Sequelize.STRING,
       artista: Sequelize.STRING,
       musica: Sequelize.STRING,
+      genero: Sequelize.STRING,
       data: Sequelize.DATE,
     }, 
       {

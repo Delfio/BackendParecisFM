@@ -18,6 +18,7 @@ class Promocoe extends Model {
     this.belongsTo(models.Radio, { foreignKey: 'radio_id', as: 'radio' });
     this.belongsTo(models.User, { foreignKey: 'user_id', as: 'cadastrante' });
 
+    this.hasMany(models.ImagemPromocoes, {as: 'image'});
   }
 }
 

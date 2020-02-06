@@ -19,7 +19,7 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      promocao_id: {
+      promocoe_id: {
         type: Sequelize.INTEGER,
         references: { model: 'promocoes', key: 'id' },
         onUpdate: 'CASCADE',

@@ -17,6 +17,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      genero: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       telefone: {
         type: Sequelize.STRING,
         allowNull: false,

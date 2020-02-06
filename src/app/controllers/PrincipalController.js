@@ -7,6 +7,7 @@ import Contato from '../models/Contato';
 import Top3 from '../models/Top3';
 import ImagemTop3s from '../models/ImagemTop3';
 import Contato from '../models/Contato';
+import Dia from '../models/Dia';
 
 import { Op } from 'sequelize'
 
@@ -87,9 +88,6 @@ class PrincipalController {
       where: {nome: diaAtual}
     })
 
-
-    console.log(id);
-
     //Banners e infos da rádio
     const radio = await Radio.findAll({
       where:{ id: IdRadio },
@@ -141,6 +139,16 @@ class PrincipalController {
             {
               model: ImagemTop3s,
               as: 'image'
+            }
+          ]
+        },
+        {
+          model: Programacao,
+          as: 'allprogramacao',
+          include: [
+            {
+              model: Dia,
+              as: 'dia'
             }
           ]
         },
