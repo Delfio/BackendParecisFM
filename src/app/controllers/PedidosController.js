@@ -1,16 +1,12 @@
 import * as Yup from 'yup';
 import Pedidos from '../models/Pedidos';
-
 import Programacao from '../models/Programacao';
-
 import Dias from '../models/Dia';
-
 import Top3 from '../models/Top3';
-
 import Radio from '../models/Radio';
-
 import { Op } from 'sequelize'
 import Notifications from '../schemas/notifications'
+import {findUser, sendNotification} from '../../websocket'
 
 import {
   parseISO, 
@@ -47,8 +43,6 @@ class PedidosController {
     try {
       const { id : RadioID, pedidoId } = req.params;
       const {data_id} = req.body
-
-      console.log(data_id);
 
       if(pedidoId){
 
@@ -262,13 +256,17 @@ class PedidosController {
 
       // console.log(message);
       
-      await Notifications.create({
+      const notificacaoMongo = await Notifications.create({
         content: message,
         hora: isHourFormated,
         dia: valor,
         programa: idProgramacao,
         radio: RadioID
       })
+
+      const sendMessage = findUser(RadioID);
+
+      sendNotification(sendMessage, 'Novo-Pedido', notificacaoMongo)
 
       return res.json(notificacao)
     }catch (err) {

@@ -1,10 +1,10 @@
 import app from './app';
 
-import websocket from './websocket'
+import { webSocket } from './websocket'
 
 import http from 'http';
 
 const server = http.Server(app)
-websocket(server);
+webSocket(server);
 
 server.listen(3333);

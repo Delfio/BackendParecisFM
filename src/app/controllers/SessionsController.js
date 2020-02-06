@@ -43,8 +43,6 @@ class SessionController{
 
       const { id, name, radio_id, adm, locutor, avatar } = user;
 
-      console.log(user);
-
       return res.json({
         user: {
           id,
