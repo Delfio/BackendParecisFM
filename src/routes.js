@@ -39,8 +39,11 @@ const upload = multer(MulterConfig);
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionsController.store);
 
+//Realizar pedido pela api normalmente
 routes.post('/musica/:id', PedidosController.store);
+//Repetir pedido via top3
 routes.post('/musica/:id/:pedidoId', PedidosController.store);
+//Exibir notificações de acordo com a rádio
 
 routes.get('/principal', RadioController.index);
 routes.get('/principal/:id', PrincipalController.index);
@@ -63,6 +66,8 @@ routes.post('/programacaos', ProgramacaoController.store);
 routes.get('/programacaos', ProgramacaoController.index);
 routes.delete('/programacaos/:id', ProgramacaoController.delete);
 routes.put('/programacaos/:id', ProgramacaoController.update);
+routes.get('/notifications/:radio_id', PedidosController.index);
+routes.get('/notifications', PedidosController.index);
 
 routes.post('/promocao/:id', PromocaoController.store);
 routes.post('/bannerPromocao/:id', upload.single('file'), BannerPromocaoController.store);

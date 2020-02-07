@@ -23,9 +23,88 @@ import {
   isWednesday //quarta
 } from 'date-fns';
 import pt from 'date-fns/locale/pt';
+import User from '../models/User';
  
 
 class PedidosController {
+  
+  async index(req, res) {
+    try {
+
+      const {data} = req.body
+
+      const isHourAtual = getHours(new Date(data));
+
+      const qtdNumeros = `${isHourAtual}`;
+      
+      // // Formatando a hora ex: 18:00 | 09:00
+      const isHourFormated = () =>{
+        if(qtdNumeros.length == 1){
+          const x  = `0${isHourAtual}:00`;
+          return x;
+    
+        }else if(qtdNumeros.length == 2){
+          const x  = `${isHourAtual}:00`;
+          return x;
+    
+        }
+      }
+      const horanessaporra = isHourFormated();
+
+      const { radio_id } = req.params;
+      const { userId } = req;
+
+      const RadioRequest = await Radio.findByPk(radio_id);
+      const userLogado = await User.findByPk(userId);
+      if(userLogado.radio_id != radio_id && !userLogado.adm) {
+        return res.status(404).json({error: 'Não permitido'})
+      }
+      //Admin
+      if(!radio_id && userLogado.adm) {
+
+        const programas =  await Programacao.findAll({
+          where:{ 
+            horario: {
+              [Op.like]: `%${horanessaporra}%`
+            }
+          },
+        });
+
+        const ids = programas.map(el => {
+          return el.id
+        });
+
+        const notifications = await Notifications.find({
+          programa: ids
+        }).sort("createdAt").limit(20);
+
+        return res.json(notifications);
+      }
+      if(!RadioRequest) {
+        return res.status(404).json({error: 'Not find'})
+      }
+
+      const { id } =  await Programacao.findOne({
+        where:{ 
+          horario: {
+            [Op.like]: `%${horanessaporra}%`
+          },
+          radio_id: radio_id
+        },
+      });
+
+      //User Normal
+      const notifications = await Notifications.find({
+        radio: radio_id,
+        programa: id
+      }).sort("createdAt").limit(15);
+
+      return res.json(notifications)
+    } catch (err) {
+
+    }
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       nome: Yup.string().required('Informe o nome'),
@@ -60,12 +139,25 @@ class PedidosController {
           "'Dia' dd 'de' MMMM', às ' HH:mm'h'",
           { locale: pt }
         );
-
-        //Pegando a hora atual - 18
+        
+        //Pegando a hora atual do cliente - 18
         const isHourAtual = getHours(new Date(data_id));
 
-        // Formatando ela para 18:00
-        const isHourFormated = `${isHourAtual}:00`
+        const qtdNumeros = `${isHourAtual}`;
+        
+        // // Formatando ela para 18:00
+        const isHourFormated = () =>{
+          if(qtdNumeros.length == 1){
+            const x  = `0${isHourAtual}:00`;
+            return x;
+      
+          }else if(qtdNumeros.length == 2){
+            const x  = `${isHourAtual}:00`;
+            return x;
+      
+          }
+        }
+        const horanessaporra = isHourFormated();
 
         //Verificando qual dia esta data_id pertence
         const dia = () => {
@@ -98,7 +190,7 @@ class PedidosController {
         const programacao = await Programacao.findAll({
           where: { 
             horario: {
-              [Op.like]: `%${isHourFormated}%`
+              [Op.like]: `%${horanessaporra}%`
             }
           },
           include: [
@@ -143,7 +235,7 @@ class PedidosController {
         
         await Notifications.create({
           content: message,
-          hora: isHourFormated,
+          hora: horanessaporra,
           dia: valor,
           programa: idProgramacao,
           radio: RadioID
@@ -152,7 +244,7 @@ class PedidosController {
         return res.json(notificacao);
       }
 
-      //metodo 2
+      // ################### 2 ####################
       if(!(await schema.isValid(req.body))){
         return res.status(400).json({error: 'Erro, verifique os dados'})
       }
@@ -171,11 +263,24 @@ class PedidosController {
         { locale: pt }
       );
 
-      //Pegando a hora atual - 18
+      //Pegando a hora atual do cliente - 18
       const isHourAtual = getHours(new Date(data));
 
-      // Formatando ela para 18:00
-      const isHourFormated = `${isHourAtual}:00`
+      const qtdNumeros = `${isHourAtual}`;
+      
+      // // Formatando ela para 18:00
+      const isHourFormated = () =>{
+        if(qtdNumeros.length == 1){
+          const x  = `0${isHourAtual}:00`;
+          return x;
+    
+        }else if(qtdNumeros.length == 2){
+          const x  = `${isHourAtual}:00`;
+          return x;
+    
+        }
+      }
+        const horanessaporra = isHourFormated();
 
       //Verificando qual dia esta data pertence
       const dia = () => {
@@ -210,7 +315,7 @@ class PedidosController {
       const programacao = await Programacao.findAll({
         where: { 
           horario: {
-            [Op.like]: `%${isHourFormated}%`
+            [Op.like]: `%${horanessaporra}%`
           }
         },
         include: [
@@ -258,7 +363,7 @@ class PedidosController {
       
       const notificacaoMongo = await Notifications.create({
         content: message,
-        hora: isHourFormated,
+        hora: horanessaporra,
         dia: valor,
         programa: idProgramacao,
         radio: RadioID
@@ -266,7 +371,7 @@ class PedidosController {
 
       const sendMessage = findUser(RadioID);
 
-      sendNotification(sendMessage, 'Novo-Pedido', notificacaoMongo)
+      sendNotification(sendMessage, 'Novo-Pedido', message)
 
       return res.json(notificacao)
     }catch (err) {

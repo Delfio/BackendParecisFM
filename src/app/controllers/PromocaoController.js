@@ -79,6 +79,7 @@ class PromocaoController {
       }
 
       const { userId } = req;
+
       const { id: radio_id } = req.params;
 
       const userLogado = await User.findByPk(userId);
