@@ -1,8 +1,89 @@
 import * as Yup from 'yup';
 import User from '../models/User';
 import Radio from '../models/Radio';
+import Avatar from '../models/FotoLocutor';
 
 class UserController{
+
+  async show (req, res){
+    try {
+
+      const { id } = req.params;
+
+      const user = await User.findOne({
+        attributes: ['name', 'email', 'locutor'],
+        where: {
+          id: id
+        },
+        include: [
+          {
+            model: Radio,
+            as: 'radio',
+            attributes: ['name']
+          },
+          {
+            model: Avatar,
+            as: 'avatar'
+          }
+        ]
+      });
+
+      return res.json(user);
+    } catch (err) {
+      return res.status(500).json({error: err.message})
+
+    }
+  }
+
+  async index(req, res){
+   
+    try {
+      const { userId } = req;
+      const userLogado = await User.findByPk(userId);
+
+      if(userLogado.adm){
+        const users = await User.findAll({
+          attributes: ['name', 'email', 'locutor'],
+          include: [
+            {
+              model: Radio,
+              as: 'radio',
+              attributes: ['name']
+            },
+            {
+              model: Avatar,
+              as: 'avatar'
+            }
+          ]
+        });
+        return res.json(users)
+      }
+
+      const users = await User.findAll({
+        attributes: ['name', 'email', 'locutor'],
+        where: {
+          radio_id: userLogado.radio_id
+        },
+        include: [
+          {
+            model: Radio,
+            as: 'radio',
+            attributes: ['name']
+          },
+          {
+            model: Avatar,
+            as: 'avatar'
+          }
+        ]
+      });
+
+      return res.json(users)
+
+    } catch(err) {
+      return res.status(500).json({error: err.message})
+
+    }
+  }
 
   async store(req, res) {
     const schema = Yup.object().shape({

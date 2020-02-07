@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import Pedidos from '../models/Pedidos';
 import Programacao from '../models/Programacao';
+import Programa from '../models/Programa';
 import Dias from '../models/Dia';
 import Top3 from '../models/Top3';
 import Radio from '../models/Radio';
@@ -31,7 +32,7 @@ class PedidosController {
   async index(req, res) {
     try {
 
-      const {data} = req.body
+      const {data} = req.query
 
       const isHourAtual = getHours(new Date(data));
 
@@ -61,28 +62,39 @@ class PedidosController {
       }
       //Admin
       if(!radio_id && userLogado.adm) {
-
-        const programas =  await Programacao.findAll({
-          where:{ 
-            horario: {
-              [Op.like]: `%${horanessaporra}%`
-            }
-          },
-        });
-
-        const ids = programas.map(el => {
-          return el.id
-        });
-
-        const notifications = await Notifications.find({
-          programa: ids
-        }).sort("createdAt").limit(20);
-
-        return res.json(notifications);
+        return res.json({ok: true})
       }
       if(!RadioRequest) {
         return res.status(404).json({error: 'Not find'})
       }
+
+      const ultimosPedidos = await Pedidos.findAll({
+        where:{
+          radio_id: radio_id
+        },
+        limit: 5,
+        order:[
+          ['id', 'DESC']
+        ],
+        include: [
+          {
+            model: Programacao,
+            as: 'programacao',
+            where: {
+              horario: {
+                [Op.like]: `%${horanessaporra}%`
+              },
+            },
+            include: [
+              {
+                model: Programa,
+                as: 'programa',
+                attributes: ['nome']
+              }
+            ]
+          }
+        ]
+      })
 
       const { id } =  await Programacao.findOne({
         where:{ 
@@ -94,12 +106,8 @@ class PedidosController {
       });
 
       //User Normal
-      const notifications = await Notifications.find({
-        radio: radio_id,
-        programa: id
-      }).sort("createdAt").limit(15);
 
-      return res.json(notifications)
+      return res.json(ultimosPedidos)
     } catch (err) {
 
     }

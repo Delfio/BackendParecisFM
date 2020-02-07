@@ -4,6 +4,23 @@ import Radio from '../models/Radio';
 
 class ProgramaController{
 
+  async show(req, res){
+    try {
+      const { id } = req.params;
+
+      const programa = await Programa.findOne({
+        where: {
+          id: id
+        }
+      });
+
+      return res.json(programa);
+    } catch(err){
+      return res.json({error: err.message});
+
+    }
+  }
+
   async index(req, res){
     try {
 
@@ -28,7 +45,6 @@ class ProgramaController{
 
     } catch(err){
       return res.json({error: err.message});
-
     }
   }
 

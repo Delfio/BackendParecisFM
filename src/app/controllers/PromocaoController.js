@@ -8,6 +8,30 @@ import {Op} from 'sequelize'
 
 class PromocaoController {
 
+  async show (req, res) {
+    try {
+      const { id } = req.params;
+
+      const programacao = await BannerPromocao.findOne({
+        attributes: ['url', 'path', 'id', 'promocao_id'],
+        include: [
+          {
+            model: Promocao,
+            as: 'promocao',
+            where: {
+              id: id
+            }
+          }
+        ]
+      })
+
+      return res.json(programacao);
+    } catch(err){
+      return res.json({error: err.message});
+
+    }
+  }
+
   async index (req, res){
     try {
       const { id } = req.params;

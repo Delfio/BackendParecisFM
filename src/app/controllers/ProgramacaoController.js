@@ -8,6 +8,29 @@ import Programa from '../models/Programa';
 
 class ProgramacaoController {
 
+  async show (req, res) {
+    try {
+      const { id } = req.params;
+
+      const programa = await Programacao.findOne({
+        where: {
+          id: id
+        },
+        include: [
+          {
+            model: Programa,
+            as: 'programa'
+          }
+        ]
+      });
+
+      return res.json(programa);
+    } catch(err){
+      return res.json({error: err.message});
+
+    }
+  }
+
   async index(req, res) {
     try{
       const { id: RadioID} = req.params;

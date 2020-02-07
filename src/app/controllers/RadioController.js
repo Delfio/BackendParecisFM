@@ -2,10 +2,59 @@ import * as Yup from 'yup';
 import Radio from '../models/Radio';
 import Cidade from '../models/Cidade';
 import User from '../models/User';
+import Banner from '../models/Banner';
+import Contato from '../models/Contato';
+import Promocoes from '../models/Promocao';
 
 import Icon from '../models/IconRadio';
 
 class RadioController{
+
+  async show(req, res) {
+    try {
+      const { id } = req.params;
+
+      const radio = await Radio.findOne({
+        where: {
+          id: id
+        },
+        include: [
+          {
+            model: Cidade,
+            as: 'cidade',
+            attributes:['nome']
+          },
+          {
+            model: Banner,
+            as: 'banner1',
+            where: {
+              type: 1
+            }
+          },
+          {
+            model: Banner,
+            as: 'banner2',
+            where: {
+              type: 2
+            }
+          },
+          {
+            model: Contato,
+            as: 'contato'
+          },
+          {
+            model: Promocoes,
+            as: 'promocao'
+          }
+        ]
+      });
+
+      return res.json(radio);
+    } catch(err){
+      return res.json({error: err.message});
+
+    }
+  }
 
   async index(req, res){
     try{

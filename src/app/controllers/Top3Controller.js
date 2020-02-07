@@ -8,6 +8,29 @@ import User from '../models/User';
 
 class Top3Controller {
 
+  async show(req, res) {
+    try {
+      const { id } = req.params;
+
+      const top3s = await Top3.findOne({
+        where: {
+          id: id
+        },
+        include: [
+          {
+            model: ImagemTop3,
+            as: 'image'
+          }
+        ]
+      });
+
+      return res.json(top3s)
+    } catch (err) {
+      return res.status(500).json({error: err.message})
+
+    } 
+  }
+
   async index(req, res){
     try {
       const {id: RadioID} = req.params;
@@ -78,7 +101,6 @@ class Top3Controller {
 
     } catch(err) {
       return res.status(500).json({error: err.message})
-
     }
   }
 

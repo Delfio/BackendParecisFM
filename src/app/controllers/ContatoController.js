@@ -6,8 +6,38 @@ import User from '../models/User';
 
 class ContatoController{
 
-  async index(req, res){
+  async show(req, res){
+    try {
+      const { id } = req.params;
 
+      const contato = await Contato.findOne({
+        where: {
+          id: id
+        }
+      });
+
+      return res.json(contato);
+
+    } catch (err) {
+      return res.status(500).json({error: err.message})
+
+    }
+  }
+
+  async index(req, res){
+    try {
+      const contato = await Contato.findAll({
+        order:[
+          ['tipo', 'ASC']
+        ],
+      });
+
+      return res.json(contato);
+
+    } catch (err) {
+      return res.status(500).json({error: err.message})
+
+    }
   }
 
   async store(req, res){

@@ -60,6 +60,7 @@ routes.post('/programa', ProgramaController.store);
 routes.get('/programa',ProgramaController.index);
 routes.put('/programa/:id',ProgramaController.update);
 routes.delete('/programa/:id',ProgramaController.delete);
+routes.get('/programa/:id',ProgramaController.show);
 
 routes.post('/dia', DiaController.store);
 routes.post('/programacaos', ProgramacaoController.store);
@@ -68,30 +69,38 @@ routes.delete('/programacaos/:id', ProgramacaoController.delete);
 routes.put('/programacaos/:id', ProgramacaoController.update);
 routes.get('/notifications/:radio_id', PedidosController.index);
 routes.get('/notifications', PedidosController.index);
+routes.get('/editProgramacao/:id', ProgramacaoController.show);
 
 routes.post('/promocao/:id', PromocaoController.store);
 routes.post('/bannerPromocao/:id', upload.single('file'), BannerPromocaoController.store);
 routes.delete('/promocao/:id', PromocaoController.delete);
 routes.get('/promocao', PromocaoController.index);
 routes.put('/promocao/:id', PromocaoController.update);
+routes.get('/promocaoAtt/:id', PromocaoController.show);
 
 routes.post('/top3/:id', Top3Controller.store);
 routes.post('/imageTop3', upload.single('file'), ImageTop3Controller.store);
 routes.put('/top3/:id', Top3Controller.update);
 routes.get('/top3', Top3Controller.index);
+routes.get('/top3Att/:id', Top3Controller.show);
 
 routes.post('/contato/:id', ContatoController.store);
 routes.put('/contato/:id', ContatoController.update);
 routes.delete('/contato/:id', ContatoController.delete);
+routes.get('/contato/:id', ContatoController.show);
+routes.get('/contato', ContatoController.index);
 
 routes.post('/estados', EstadosController.store)
 routes.post('/cidades', CidadeController.store)
 
 routes.put('/users', UserController.update);
+routes.get('/users', UserController.index);
+routes.get('/users/:id', UserController.show);
 
 routes.post('/radio', RadioController.store);
 routes.put('/radio/:id', RadioController.update);
 routes.delete('/radio/:id', RadioController.delete);
+routes.get('/radio/:id', RadioController.show);
 
 routes.post('/banner/:id/:opcao', upload.single('file'), BannerController.store);
 routes.post('/icon', upload.single('file'), IconController.store);
