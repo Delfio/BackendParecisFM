@@ -46,6 +46,8 @@ routes.post('/musica/:id', PedidosController.store);
 routes.post('/musica/:id/:pedidoId', PedidosController.store);
 //Exibir notificações de acordo com a rádio
 
+routes.get('/promocaoAtt/:id', PromocaoController.show);
+
 routes.get('/principal', RadioController.index);
 routes.get('/principal/:id', PrincipalController.index);
 
@@ -78,7 +80,6 @@ routes.post('/bannerPromocao', upload.single('file'), BannerPromocaoController.s
 routes.delete('/promocao/:id', PromocaoController.delete);
 routes.get('/promocao', PromocaoController.index);
 routes.put('/promocao/:id', PromocaoController.update);
-routes.get('/promocaoAtt/:id', PromocaoController.show);
 
 routes.post('/top3/:id', Top3Controller.store);
 routes.post('/imageTop3', upload.single('file'), ImageTop3Controller.store);

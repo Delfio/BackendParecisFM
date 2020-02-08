@@ -36,15 +36,14 @@ class PromocaoController {
       const { id } = req.params;
 
       if(id){
-        const promocao = await BannerPromocao.findAll({
-          attributes: ['url', 'path', 'id', 'promocao_id'],
+        const promocao = await Promocao.findAll({
+          where:{
+            radio_id: id
+          },
           include: [
             {
-              model: Promocao,
-              as: 'promocao',
-              where: {
-                radio_id: id
-              }
+              model: BannerPromocao,
+              as: 'imagem'
             }
           ]
         });

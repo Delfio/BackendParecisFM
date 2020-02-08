@@ -13,6 +13,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      cpf: {
+        type: Sequelize.STRING(11),
+        allowNull: false,
+        unique: true
+      },
       cidade: {
         type: Sequelize.STRING
       },

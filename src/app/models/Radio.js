@@ -5,6 +5,9 @@ class Radio extends Model {
     super.init({
       name: Sequelize.STRING,
       link: Sequelize.STRING,
+      facebook: Sequelize.STRING,
+      instagram: Sequelize.STRING,
+      whatsapp: Sequelize.STRING,
     }, 
       {
         sequelize,
