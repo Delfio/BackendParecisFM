@@ -5,6 +5,7 @@ class Promocoe extends Model {
     super.init({
       nome: Sequelize.STRING,
       link: Sequelize.STRING,
+      descricao: Sequelize.STRING,
     }, 
       {
         sequelize,
@@ -17,8 +18,8 @@ class Promocoe extends Model {
   static associate(models){
     this.belongsTo(models.Radio, { foreignKey: 'radio_id', as: 'radio' });
     this.belongsTo(models.User, { foreignKey: 'user_id', as: 'cadastrante' });
-
-    this.hasMany(models.ImagemPromocoes, {as: 'image'});
+    this.belongsTo(models.Imagem_promocoes, { foreignKey: "imagem_id", as: "imagem" });
+    
   }
 }
 

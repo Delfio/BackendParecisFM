@@ -27,7 +27,8 @@ import {
 class PrincipalController {
 
   async index(req, res){
-
+    try {
+      
     const { id: IdRadio } = req.params;
 
     const { data } = req.query
@@ -70,7 +71,7 @@ class PrincipalController {
         return "Quinta-Feira";
 
       }else if(isFriday(parseISO(data))){
-        return "Sexta-Feita";
+        return "Sexta-Feira";
 
       }else if(isSaturday(parseISO(data))){
         return "Sabado";
@@ -82,11 +83,13 @@ class PrincipalController {
     }
     //executando a função e pegando seu valor
     const diaAtual = dia();
+    console.log(diaAtual)
 
     //Pegar o id do dia atual
     const {id} = await Dias.findOne({
       where: {nome: diaAtual}
     })
+
 
     //Banners e infos da rádio
     const radio = await Radio.findAll({
@@ -164,6 +167,9 @@ class PrincipalController {
     });
 
     return res.json(radio)
+    } catch(err){
+      return res.json({error: err.message})
+    }
   }
 
 }

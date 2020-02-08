@@ -152,7 +152,45 @@ class ProgramacaoController {
         })
       }
 
-      const programacoesGerais = await Programacao.findAll();
+      const { userId } = req;
+
+      const userLogado = await User.findByPk(userId);
+
+      if(userLogado.adm){
+        const programacoesGerais = await Programacao.findAll({
+          include: [
+            {
+              model: Dia,
+              as: 'dia'
+            },
+            {
+              model: Programa,
+              as: 'programa'
+            }
+          ]
+        });
+
+        return res.json(programacoesGerais);
+      }
+
+      const programacoesGerais = await Programacao.findAll({
+        where: {
+          radio_id: userLogado.radio_id
+        },
+        include: [
+          {
+            model: Dia,
+            as: 'dia',
+            order: [
+              ['nome']
+            ]
+          },
+          {
+            model: Programa,
+            as: 'programa'
+          }
+        ]
+      });
 
       return res.json(programacoesGerais);
 
@@ -210,7 +248,7 @@ class ProgramacaoController {
         horario: dados.horario,
         programa_id: dados.programa_id,
         dia_id: dados.dia_id,
-        user_id: req.user_id,
+        user_id: dados.user_id,
         radio_id: userLogado.adm? dados.radio_id : userLogado.radio_id
       })
 
@@ -225,9 +263,9 @@ class ProgramacaoController {
     const schema = Yup.object().shape({
       horario: Yup.string().min(5),
       radio_id: Yup.number(),
-      programa_id: Yup.number(),
-      dia_id: Yup.number(),
-      user_id: Yup.number()
+      programa: Yup.number(),
+      dia: Yup.number(),
+      user: Yup.number()
     });
     try {
 
@@ -245,9 +283,9 @@ class ProgramacaoController {
       if(dados.horario){
         const programacaoHorario = await Programacao.findOne({ 
           where: { 
-            programa_id: dados.programa_id,
+            programa: dados.programa,
             horario: dados.horario,
-            dia_id: dados.dia_id,
+            dia: dados.dia,
             radio_id: userLogado.adm ? dados.radio_id : userLogado.radio_id
           } 
         });
@@ -257,7 +295,7 @@ class ProgramacaoController {
         }
       }
 
-      const LocutorRequired = await User.findByPk(dados.user_id);
+      const LocutorRequired = await User.findByPk(dados.user);
 
       if( !LocutorRequired || !programacaoEXISTS ){
         return res.status(400).json({error: 'Dados, inexistentes'})

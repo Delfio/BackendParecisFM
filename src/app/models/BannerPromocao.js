@@ -2,7 +2,8 @@ import 'dotenv/config';
 
 import Sequelize, { Model } from 'sequelize';
 
-class ImagemPromocoes extends Model {
+class Imagem_promocoes extends Model {
+
   static init(sequelize) {
     super.init(
       {
@@ -14,7 +15,7 @@ class ImagemPromocoes extends Model {
             // tem que permitir o navegador acessar a imagem sem precisar se autenticar! "app.js"
             return `${process.env.APP_URL}/files/${this.path}`;
           }
-        }
+        },
       },
       {
         sequelize
@@ -23,11 +24,7 @@ class ImagemPromocoes extends Model {
 
     return this;
   }
-  static associate(models) {
-    //Relacionamento de fk
-    this.belongsTo(models.Promocoe, { foreignKey: "promocao_id", as: "promocao" });
-  }
 
 }
 
-export default ImagemPromocoes;
+export default Imagem_promocoes;

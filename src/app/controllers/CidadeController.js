@@ -2,6 +2,13 @@ import * as Yup from 'yup';
 import Cidade from '../models/Cidade';
 
 class CidadeController {
+
+  async index(req, res){
+    const cidades = await Cidade.findAll();
+
+    return res.json(cidades);
+  }
+
   async store(req, res){
     try {
       const schema = Yup.object().shape({

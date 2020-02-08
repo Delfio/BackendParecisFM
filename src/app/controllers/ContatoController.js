@@ -26,13 +26,30 @@ class ContatoController{
 
   async index(req, res){
     try {
+      const {userId} = req;
+      const userLogado = await User.findByPk(userId);
+
+      if(userLogado.adm){
+        const contato = await Contato.findAll({
+          order:[
+            ['tipo', 'ASC']
+          ],
+        });
+  
+        return res.json(contato);
+      }
+
       const contato = await Contato.findAll({
+        where: {
+          radio_id: userLogado.radio_id
+        },
         order:[
           ['tipo', 'ASC']
         ],
       });
 
       return res.json(contato);
+      
 
     } catch (err) {
       return res.status(500).json({error: err.message})
@@ -42,8 +59,8 @@ class ContatoController{
 
   async store(req, res){
     const schema = Yup.object().shape({
-      tipo: Yup.number().min(1).max(1).required(),
-      link: Yup.string().url().required(),
+      tipo: Yup.number().min(1).max(3).required(),
+      link: Yup.string().required(),
       radio_id: Yup.number(),
     })
     try {

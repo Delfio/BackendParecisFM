@@ -7,10 +7,10 @@ class LocutorController {
 
   async index(req, res){
     try{
-
+      const {id} =req.params;
       const user = await User.findAll({
-        where: { locutor: true },
-        attributes:['name', 'email', 'radio_id'],
+        where: { locutor: true, radio_id: id },
+        attributes:['id', 'name', 'email', 'radio_id'],
         include:[
           {
             model: FotoLocutor,

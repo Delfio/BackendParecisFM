@@ -2,6 +2,17 @@ import Dias from '../models/Dia'
 
 
 class DiasController {
+  async index(req, res){
+    try {
+
+      const dias = await Dias.findAll()
+
+      return res.json(dias)
+    } catch (err){
+
+    }
+  }
+
   async store(req, res){
     try{
       const dados = req.body;

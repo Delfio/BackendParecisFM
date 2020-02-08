@@ -29,22 +29,26 @@ class RadioController{
             as: 'banner1',
             where: {
               type: 1
-            }
+            },
+            limit: 1,
+            order:[
+              ['id', 'DESC']
+            ],
           },
           {
             model: Banner,
             as: 'banner2',
             where: {
               type: 2
-            }
+            },
+            limit: 1,
+            order:[
+              ['id', 'DESC']
+            ],
           },
           {
             model: Contato,
             as: 'contato'
-          },
-          {
-            model: Promocoes,
-            as: 'promocao'
           }
         ]
       });

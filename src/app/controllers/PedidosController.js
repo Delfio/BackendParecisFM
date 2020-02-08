@@ -182,7 +182,7 @@ class PedidosController {
             return "Quinta-Feira";
 
           }else if(isFriday(parseISO(data_id))){
-            return "Sexta-Feita";
+            return "Sexta-Feira";
 
           }else if(isSaturday(parseISO(data_id))){
             return "Sabado";
@@ -215,9 +215,10 @@ class PedidosController {
           ],
         });
 
-        if(programacao.length < 1) {
-          return res.status(403).json({error: 'Sem programação'})
-        }
+        // DESCOMENTAR
+        // if(programacao.length < 1) {
+        //   return res.status(403).json({error: 'Sem programação'})
+        // }
   
         const idProgramacao = programacao[0].id;
 
@@ -305,7 +306,7 @@ class PedidosController {
           return "Quinta-Feira";
 
         }else if(isFriday(parseISO(data))){
-          return "Sexta-Feita";
+          return "Sexta-Feira";
 
         }else if(isSaturday(parseISO(data))){
           return "Sabado";
@@ -369,7 +370,7 @@ class PedidosController {
 
       // console.log(message);
       
-      const notificacaoMongo = await Notifications.create({
+      await Notifications.create({
         content: message,
         hora: horanessaporra,
         dia: valor,
@@ -378,6 +379,8 @@ class PedidosController {
       })
 
       const sendMessage = findUser(RadioID);
+
+      console.log(sendMessage);
 
       sendNotification(sendMessage, 'Novo-Pedido', message)
 

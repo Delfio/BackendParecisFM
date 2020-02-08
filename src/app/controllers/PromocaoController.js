@@ -12,20 +12,19 @@ class PromocaoController {
     try {
       const { id } = req.params;
 
-      const programacao = await BannerPromocao.findOne({
-        attributes: ['url', 'path', 'id', 'promocao_id'],
+      const promocao = await Promocao.findAll({
+        where: {
+          id: id
+        },
         include: [
           {
-            model: Promocao,
-            as: 'promocao',
-            where: {
-              id: id
-            }
+            model: BannerPromocao,
+            as: 'imagem'
           }
         ]
       })
 
-      return res.json(programacao);
+      return res.json(promocao);
     } catch(err){
       return res.json({error: err.message});
 
@@ -94,7 +93,8 @@ class PromocaoController {
   async store(req, res){
     const schema = Yup.object().shape({
       nome: Yup.string().required(),
-      link: Yup.string().url().required()
+      link: Yup.string().url().required(),
+      descricao: Yup.string().required()
     })
     try {
 
@@ -124,7 +124,8 @@ class PromocaoController {
         nome: req.body.nome,
         link: req.body.link,
         radio_id: radio_id,
-        user_id: userId
+        user_id: userId,
+        descricao: req.body.descricao
       });
 
       return res.json(promocao);
@@ -138,7 +139,8 @@ class PromocaoController {
   async update(req, res){
     const schema = Yup.object().shape({
       nome: Yup.string(),
-      link: Yup.string().url()
+      link: Yup.string().url(),
+      imagem_id: Yup.number()
     })
     try {
       if(!(await schema.isValid(req.body))){
@@ -146,10 +148,18 @@ class PromocaoController {
       }
 
       const { userId } = req;
+      const { imagem_id } = req.body
       const { id: promocaoID } = req.params;
       
       const userLogado = await User.findByPk(userId);
       const promocoesRequest = await Promocao.findByPk(promocaoID);
+
+      if(imagem_id){
+        const bannerRequest = await BannerPromocao.findByPk(imagem_id);
+        if(!bannerRequest){
+          return res.status(404).json({error: 'Não existe esse banner'})
+        }
+      }
 
       if(!promocoesRequest){
         return res.status(404).json({error: 'Not found'})

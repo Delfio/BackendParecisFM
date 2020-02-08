@@ -31,6 +31,7 @@ import ProgramaController from './app/controllers/ProgramaController';
 import DiaController from './app/controllers/DiasController';
 
 import authMiddlewares from './app/middlewares/auth';
+import DiasController from './app/controllers/DiasController';
 
 const routes = new Router();
 
@@ -54,6 +55,7 @@ routes.get('/top3/:id', Top3Controller.index);
 
 routes.get('/promocao/:id', PromocaoController.index);
 
+routes.get('/dias', DiasController.index)
 routes.use(authMiddlewares);
 
 routes.post('/programa', ProgramaController.store);
@@ -72,7 +74,7 @@ routes.get('/notifications', PedidosController.index);
 routes.get('/editProgramacao/:id', ProgramacaoController.show);
 
 routes.post('/promocao/:id', PromocaoController.store);
-routes.post('/bannerPromocao/:id', upload.single('file'), BannerPromocaoController.store);
+routes.post('/bannerPromocao', upload.single('file'), BannerPromocaoController.store);
 routes.delete('/promocao/:id', PromocaoController.delete);
 routes.get('/promocao', PromocaoController.index);
 routes.put('/promocao/:id', PromocaoController.update);
@@ -83,6 +85,7 @@ routes.post('/imageTop3', upload.single('file'), ImageTop3Controller.store);
 routes.put('/top3/:id', Top3Controller.update);
 routes.get('/top3', Top3Controller.index);
 routes.get('/top3Att/:id', Top3Controller.show);
+routes.delete('/top3/:id', Top3Controller.delete);
 
 routes.post('/contato/:id', ContatoController.store);
 routes.put('/contato/:id', ContatoController.update);
@@ -92,6 +95,7 @@ routes.get('/contato', ContatoController.index);
 
 routes.post('/estados', EstadosController.store)
 routes.post('/cidades', CidadeController.store)
+routes.get('/cidades', CidadeController.index)
 
 routes.put('/users', UserController.update);
 routes.get('/users', UserController.index);
@@ -106,7 +110,7 @@ routes.post('/banner/:id/:opcao', upload.single('file'), BannerController.store)
 routes.post('/icon', upload.single('file'), IconController.store);
 routes.post('/imageProfile', upload.single('file'), FotoPerfilController.store)
 routes.put('/profileLocutor', LocutorController.update)
-routes.get('/locutores', LocutorController.index)
+routes.get('/locutores/:id', LocutorController.index)
 
 
 export default routes;

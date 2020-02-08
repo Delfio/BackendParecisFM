@@ -3,11 +3,11 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.addColumn(
-      'radios',
-      'icon_id',
+      'promocoes',
+      'imagem_id',
       {
         type: Sequelize.INTEGER,
-        references: { model: 'icons', key: 'id' },
+        references: { model: 'imagem_promocoes', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
         allowNull: true,
@@ -16,6 +16,6 @@ module.exports = {
   },
 
   down: (queryInterface) => {
-    return queryInterface.removeColumn('radios', 'icon_id');
+    return queryInterface.removeColumn('promocoes', 'imagem_id');
   }
-};
+}
