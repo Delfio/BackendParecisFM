@@ -89,6 +89,7 @@ class UserController{
     const schema = Yup.object().shape({
       name: Yup.string().required('nome é obrigatório'),
       email: Yup.string().email('insira um email válido').required('O email é obrigatório'),
+      cpf: Yup.string().required(),
       password: Yup.string().required('Senha é obrigatória').min(6, 'Minimo de 6 digitos'),
       locutor: Yup.boolean()
     })
@@ -116,6 +117,7 @@ class UserController{
         email: req.body.email,
         radio_id: req.body.radio_id,
         password: req.body.password,
+        cpf: req.body.cpf,
         locutor: req.body.locutor? true : false
       });
 
@@ -143,6 +145,12 @@ class UserController{
 
       oldPassword:
         Yup.string().min(6),
+
+      telefone:
+        Yup.string().min(9).max(11),
+
+      cidade:
+        Yup.string(),
 
       password:
         Yup.string().min(6).when('oldPassword', (oldPassword, field) => 
@@ -184,12 +192,14 @@ class UserController{
         return res.status(401).json({error: 'Senha não confere'})
       }
 
-      const {id, name, radio_id} = await user.update(req.body);
+      const {id, name, radio_id, cidade, telefone} = await user.update(req.body);
 
       return res.json({
         id,
         name,
         email,
+        cidade,
+        telefone,
         radio_id
       });
     } catch (err){

@@ -90,6 +90,9 @@ class RadioController{
     const schema = Yup.object().shape({
       name: Yup.string().required('O nome da rádio é obrigatório'),
       cidade: Yup.number(),
+      facebook: Yup.string().url(),
+      instagram: Yup.string().url(),
+      whatsapp: Yup.string().min(14).max(14),
       link: Yup.string().url('Insira uma url válida').required('A URL é requerida')
     })
 
@@ -98,7 +101,7 @@ class RadioController{
         return res.status(400).json({error: 'Erro, verifique os dados'})
       }
 
-      const { name, cidade, link } = req.body;
+      const { name, cidade, link, facebook, instagram, whatsapp } = req.body;
 
 
       const radioExists = await Radio.findOne({ where: { name: req.body.name } });
@@ -110,6 +113,9 @@ class RadioController{
       const radio = await Radio.create({
         name,
         cidade_id: cidade,
+        facebook,
+        instagram,
+        whatsapp,
         link
       })
 
