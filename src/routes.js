@@ -64,6 +64,9 @@ routes.get('/top3Att/:id', Top3Controller.show);
 routes.get('/promocao/:id', PromocaoController.index);
 
 routes.get('/dias', DiasController.index)
+
+routes.put('/users/:id', UserController.update);
+
 routes.use(authMiddlewares);
 
 routes.post('/programa', ProgramaController.store);

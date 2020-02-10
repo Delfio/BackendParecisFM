@@ -11,7 +11,7 @@ class UserController{
       const { id } = req.params;
 
       const user = await User.findOne({
-        attributes: ['name', 'email', 'locutor'],
+        attributes: ['name', 'email', 'locutor', 'telefone', 'cidade'],
         where: {
           id: id
         },
@@ -147,7 +147,7 @@ class UserController{
         Yup.string().min(6),
 
       telefone:
-        Yup.string().min(9).max(11),
+        Yup.string().min(8).max(11),
 
       cidade:
         Yup.string(),
@@ -163,6 +163,12 @@ class UserController{
       ),
       radio_id:
         Yup.number(),
+      
+      cfp_request:
+        Yup.string().min(11).max(12),
+      
+      cpf_password:
+        Yup.string()
     });
 
     try {
@@ -172,8 +178,34 @@ class UserController{
 
       const {userId} = req;
 
-      const {email, oldPassword, password} = req.body;
+      const {email, oldPassword, password, cfp_request, cpf_password} = req.body;
+      const {id} = req.params;
   
+      //Restar a senha pelo CPF
+      if( id && cfp_request) {
+        const userRequest = await User.findOne({
+          where: {
+            cpf: cfp_request
+          }
+        });
+
+        if(!userRequest) {
+          return res.status(401).json({error: 'CPF INVÁLIDO'})
+        }
+
+        await userRequest.update({
+          password: cpf_password
+        });
+
+        return res.json(userRequest);
+      } else if(id && !cfp_request){
+        return res.status(400).json({error: 'Tem algo de errado ai'})
+
+      } else if(!id && cfp_request){
+
+        return res.status(400).json({error: 'Tem algo de errado ai pacero'})
+      }
+
       const user =  await User.findByPk(userId);
   
       if(email && (email !== user.email)){
@@ -192,16 +224,20 @@ class UserController{
         return res.status(401).json({error: 'Senha não confere'})
       }
 
-      const {id, name, radio_id, cidade, telefone} = await user.update(req.body);
+      const userRequest = await user.update(req.body);
 
-      return res.json({
-        id,
-        name,
-        email,
-        cidade,
-        telefone,
-        radio_id
-      });
+      const userRetornar = await User.findOne({
+        where: {
+          id: userRequest.id
+        },
+        include:[
+          {
+            model: Avatar,
+            as: 'avatar'
+          }
+        ]
+      })
+      return res.json(userRetornar);
     } catch (err){
       return res.status(500).json({error: err.message});
     }

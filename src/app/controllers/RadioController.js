@@ -49,6 +49,10 @@ class RadioController{
           {
             model: Contato,
             as: 'contato'
+          },
+          {
+            model: Icon,
+            as: 'icon'
           }
         ]
       });

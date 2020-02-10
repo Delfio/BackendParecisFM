@@ -58,7 +58,8 @@ class PedidosController {
       const RadioRequest = await Radio.findByPk(radio_id);
       const userLogado = await User.findByPk(userId);
       if(userLogado.radio_id != radio_id && !userLogado.adm) {
-        return res.status(404).json({error: 'Não permitido'})
+        console.log("Não atorizadooooo")
+        return res.status(404).json({error: 'Não permitido'});
       }
       //Admin
       if(!radio_id && userLogado.adm) {
