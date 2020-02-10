@@ -6,6 +6,9 @@ class Promocoe extends Model {
       nome: Sequelize.STRING,
       link: Sequelize.STRING,
       descricao: Sequelize.STRING,
+      facebook: Sequelize.BOOLEAN,
+      instagram: Sequelize.BOOLEAN,
+      whatsapp: Sequelize.BOOLEAN
     }, 
       {
         sequelize,

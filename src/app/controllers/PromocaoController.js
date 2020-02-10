@@ -20,6 +20,11 @@ class PromocaoController {
           {
             model: BannerPromocao,
             as: 'imagem'
+          },
+          {
+            model: Radio,
+            as: 'radio',
+            attributes: [ 'facebook', 'instagram', 'whatsapp' ]
           }
         ]
       })
@@ -97,7 +102,10 @@ class PromocaoController {
     const schema = Yup.object().shape({
       nome: Yup.string().required(),
       link: Yup.string().url().required(),
-      descricao: Yup.string().required()
+      descricao: Yup.string().required(),
+      facebook: Yup.boolean(),
+      instagram: Yup.boolean(),
+      whatsapp: Yup.boolean(),
     })
     try {
 
@@ -128,6 +136,9 @@ class PromocaoController {
         link: req.body.link,
         radio_id: radio_id,
         user_id: userId,
+        facebook: req.body.facebook,
+        instagram: req.body.instagram,
+        whatsapp: req.body.whatsapp,
         descricao: req.body.descricao
       });
 

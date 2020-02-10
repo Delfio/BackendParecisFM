@@ -17,6 +17,18 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      facebook: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      instagram: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      whatsapp: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       descricao: {
         type: Sequelize.TEXT,
         allowNull: false,

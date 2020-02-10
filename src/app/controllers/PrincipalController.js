@@ -1,13 +1,16 @@
 import Radio from '../models/Radio';
 import Banner from '../models/Banner';
 import Programacao from '../models/Programacao';
+import Programa from '../models/Programa';
 import Dias from '../models/Dia';
 import User from '../models/User';
+import Avatar from '../models/FotoLocutor';
 import Contato from '../models/Contato';
 import Top3 from '../models/Top3';
 import ImagemTop3s from '../models/ImagemTop3';
 import Contato from '../models/Contato';
 import Dia from '../models/Dia';
+import Cidade from '../models/Cidade';
 
 import { Op } from 'sequelize'
 
@@ -89,6 +92,15 @@ class PrincipalController {
     const {id} = await Dias.findOne({
       where: {nome: diaAtual}
     })
+    // const programcaoTnc = await Programacao.findAll({
+    //   where:{ 
+    //     dia_id: id,
+    //     horario: {
+    //       [Op.like]: `%${String(horanessaporra)}%`
+    //     },
+    //   }
+    // })
+    // console.log( "sdfasdfsdf :  " ,programcaoTnc, "  sadfsdfsdf ....")
 
 
     //Banners e infos da rádio
@@ -127,7 +139,17 @@ class PrincipalController {
             {
               model: User,
               as: 'locutor',
-              attributes: [ 'name', 'email' ]
+              attributes: [ 'id' ,'name', 'email' ],
+              include: [
+                {
+                  model: Avatar,
+                  as: 'avatar'
+                }
+              ]
+            },
+            {
+              model: Programa,
+              as: 'programa'
             }
           ]
         },
@@ -162,6 +184,11 @@ class PrincipalController {
           order:[
             ['id', 'DESC']
           ]
+        },
+        {
+          model: Cidade,
+          as: 'cidade',
+          attributes: ['nome']
         }
       ]
     });
