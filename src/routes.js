@@ -58,6 +58,8 @@ routes.get('/top3/:id', Top3Controller.index);
 
 routes.get('/programaEmExibicao/:id', ProgramaEmExibicao.index);
 
+//Escutar os top 3
+routes.get('/top3Att/:id', Top3Controller.show);
 
 routes.get('/promocao/:id', PromocaoController.index);
 
@@ -93,7 +95,6 @@ routes.post('/top3/:id', Top3Controller.store);
 routes.post('/imageTop3', upload.single('file'), ImageTop3Controller.store);
 routes.put('/top3/:id', Top3Controller.update);
 routes.get('/top3', Top3Controller.index);
-routes.get('/top3Att/:id', Top3Controller.show);
 routes.delete('/top3/:id', Top3Controller.delete);
 
 routes.post('/contato/:id', ContatoController.store);
