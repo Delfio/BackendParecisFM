@@ -5,6 +5,7 @@ class Top3 extends Model {
     super.init({
       artista: Sequelize.STRING,
       musica: Sequelize.STRING,
+      link: Sequelize.STRING,
     }, 
       {
         sequelize,

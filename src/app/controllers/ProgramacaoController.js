@@ -36,7 +36,7 @@ class ProgramacaoController {
       const { id: RadioID} = req.params;
 
       if(RadioID){
-        const programacoesDeSegunda = await Programacao.findAll({
+        const programacoesDeSegundaASexta = await Programacao.findAll({
           where:{
             radio_id: RadioID
           },
@@ -45,7 +45,13 @@ class ProgramacaoController {
               model: Dia,
               as: 'dia',
               where:{
-                nome: 'Segunda-Feira'
+                nome: [
+                'Segunda-Feira', 
+                'Terca-Feira', 
+                'Quarta-Feira', 
+                'Quinta-Feira', 
+                'Sexta-Feira'
+              ]
               }
             }
           ]
@@ -142,7 +148,7 @@ class ProgramacaoController {
         });
 
         return res.json({
-          Segunda:programacoesDeSegunda,
+          Segunda:programacoesDeSegundaASexta,
           Terca:programacoesDeTerca,
           Quarta:programacoesDeQuarta,
           Quinta:programacoesDeQuinta,

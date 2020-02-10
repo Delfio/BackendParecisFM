@@ -48,6 +48,10 @@ class PromocaoController {
           ]
         });
 
+        if(promocao.length === 0){
+          return res.json([])
+        }
+
         return res.json(promocao)
       }
 

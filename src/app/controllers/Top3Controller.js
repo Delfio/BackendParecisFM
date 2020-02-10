@@ -106,8 +106,9 @@ class Top3Controller {
 
   async store(req, res){
     const schema = Yup.object().shape({
-      artista: Yup.string().required('O nome da rádio é obrigatório'),
+      artista: Yup.string().required(),
       musica: Yup.string().required(),
+      link: Yup.string().required(),
       imagem_id: Yup.number()
     })
     try {
@@ -154,6 +155,7 @@ class Top3Controller {
       const top3 = await Top3.create({
         artista: dados.artista,
         musica: dados.musica,
+        link: dados.link,
         imagem_id: dados.imagem_id,
         radio_id: userLogado.adm ? (dados.radio_id ? dados.radio_id : userLogado.radio_id ): userLogado.radio_id
       });

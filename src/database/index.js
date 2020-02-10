@@ -29,6 +29,9 @@ import Dia from '../app/models/Dia';
 import Programacao from '../app/models/Programacao';
 import Programa from '../app/models/Programa';
 
+import ProgramaEmExibicao from '../app/models/ProgramaEmExibicao';
+import TitleProgramaEmExibicao from '../app/models/TitoloProgramaEmExibicao';
+
 const models = [
   User, 
   Banner, 
@@ -45,6 +48,8 @@ const models = [
   Dia, 
   Programacao,
   Programa,
+  ProgramaEmExibicao,
+  TitleProgramaEmExibicao,
   FotoLocutor
 ];
 

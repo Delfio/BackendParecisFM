@@ -2,24 +2,24 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('promocoes', {
+
+    return queryInterface.createTable('programacoes_em_exibicaos', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
-        primaryKey: true,
+        primaryKey: true
       },
-      nome: {
+      horario: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      link: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      descricao: {
-        type: Sequelize.TEXT,
-        allowNull: false,
+      programa_id: {
+        type: Sequelize.INTEGER,
+        references: { model: 'programas', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+        allowNull: true,
       },
       radio_id: {
         type: Sequelize.INTEGER,
@@ -28,9 +28,9 @@ module.exports = {
         onDelete: 'SET NULL',
         allowNull: true,
       },
-      user_id: {
+      titulos_programacoes_em_exibicao_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'users', key: 'id' },
+        references: { model: 'titulos_programacoes_em_exibicaos', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
         allowNull: true,
@@ -44,11 +44,12 @@ module.exports = {
         allowNull: false,
       }
     });
-
+    
   },
 
-  down: (queryInterface) => {
-    return queryInterface.dropTable('promocoes');
+  down: (queryInterface, Sequelize) => {
 
+    return queryInterface.dropTable('programacoes_em_exibicaos');
+    
   }
 };

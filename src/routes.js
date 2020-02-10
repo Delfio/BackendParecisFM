@@ -29,6 +29,8 @@ import CidadeController from './app/controllers/CidadeController';
 import ProgramacaoController from './app/controllers/ProgramacaoController';
 import ProgramaController from './app/controllers/ProgramaController';
 import DiaController from './app/controllers/DiasController';
+import TitleProgramacaoExibicao from './app/controllers/TitleProgramaExibicaoController';
+import ProgramaEmExibicao from './app/controllers/ProgramaEmExibicaoController';
 
 import authMiddlewares from './app/middlewares/auth';
 import DiasController from './app/controllers/DiasController';
@@ -52,8 +54,10 @@ routes.get('/principal', RadioController.index);
 routes.get('/principal/:id', PrincipalController.index);
 
 routes.get('/programacaos/:id', ProgramacaoController.index);
-
 routes.get('/top3/:id', Top3Controller.index);
+
+routes.get('/programaEmExibicao/:id', ProgramaEmExibicao.index);
+
 
 routes.get('/promocao/:id', PromocaoController.index);
 
@@ -65,6 +69,10 @@ routes.get('/programa',ProgramaController.index);
 routes.put('/programa/:id',ProgramaController.update);
 routes.delete('/programa/:id',ProgramaController.delete);
 routes.get('/programa/:id',ProgramaController.show);
+
+routes.post('/titleProgramacaoExibicao', TitleProgramacaoExibicao.store);
+routes.get('/titleProgramacaoExibicao', TitleProgramacaoExibicao.index);
+routes.post('/programaEmExibicao/:id', ProgramaEmExibicao.store);
 
 routes.post('/dia', DiaController.store);
 routes.post('/programacaos', ProgramacaoController.store);
