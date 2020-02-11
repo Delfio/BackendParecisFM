@@ -4,7 +4,6 @@ class Cidade extends Model {
   static init(sequelize) {
     super.init({
       nome: Sequelize.STRING,
-      estado_id: Sequelize.INTEGER
     }, 
       {
         sequelize,
@@ -13,6 +12,10 @@ class Cidade extends Model {
 
 
     return this;
+  }
+  static associate(models) {
+    //Relacionamento de fk
+    this.belongsTo(models.Estado, { foreignKey: "estado_id", as: "estado" })
   }
 
 }

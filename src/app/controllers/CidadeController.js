@@ -1,10 +1,18 @@
 import * as Yup from 'yup';
 import Cidade from '../models/Cidade';
+import Estados from '../models/Estado';
 
 class CidadeController {
 
   async index(req, res){
-    const cidades = await Cidade.findAll();
+    const cidades = await Cidade.findAll({
+      include: [
+        {
+          model: Estados,
+          as: 'estado'
+        }
+      ]
+    });
 
     return res.json(cidades);
   }
@@ -54,6 +62,26 @@ class CidadeController {
       return res.json(cidadeExists);
     } catch (err) {
       return res.status(500).json({error: err.message})
+    }
+  }
+
+  async delete(req, res) {
+    try {
+
+      const {id} = req.params;
+
+      const cidadeExsits = await Cidade.findByPk(id);
+
+      if(!cidadeExsits) {
+        return res.status(404).json({eror: 'Not found'})
+      }
+
+      await cidadeExsits.destroy();
+
+      return res.json({ok : true})
+
+    } catch(err){
+
     }
   }
 }
