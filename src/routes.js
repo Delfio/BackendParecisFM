@@ -75,9 +75,16 @@ routes.put('/programa/:id',ProgramaController.update);
 routes.delete('/programa/:id',ProgramaController.delete);
 routes.get('/programa/:id',ProgramaController.show);
 
+routes.post('/programaEmExibicao/:id', ProgramaEmExibicao.store);
+routes.get('/programaEmExibicaoShows/:id', ProgramaEmExibicao.show);
+routes.put('/programaEmExibicao/:id', ProgramaEmExibicao.update);
+routes.delete('/programaEmExibicao/:id', ProgramaEmExibicao.delete);
+
 routes.post('/titleProgramacaoExibicao', TitleProgramacaoExibicao.store);
 routes.get('/titleProgramacaoExibicao', TitleProgramacaoExibicao.index);
-routes.post('/programaEmExibicao/:id', ProgramaEmExibicao.store);
+routes.put('/titleProgramacaoExibicao/:id', TitleProgramacaoExibicao.update);
+routes.delete('/titleProgramacaoExibicao/:id', TitleProgramacaoExibicao.delete);
+
 
 routes.post('/dia', DiaController.store);
 routes.post('/programacaos', ProgramacaoController.store);
@@ -107,7 +114,13 @@ routes.get('/contato/:id', ContatoController.show);
 routes.get('/contato', ContatoController.index);
 
 routes.post('/estados', EstadosController.store)
+routes.get('/estados', EstadosController.index)
+routes.put('/estados/:id', EstadosController.update)
+routes.delete('/estados/:id', EstadosController.delete)
+
 routes.post('/cidades', CidadeController.store)
+routes.put('/cidades/:id', CidadeController.update)
+routes.delete('/cidades/:id', CidadeController.delete)
 routes.get('/cidades', CidadeController.index)
 
 routes.put('/users', UserController.update);

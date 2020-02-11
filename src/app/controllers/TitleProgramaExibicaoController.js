@@ -1,11 +1,11 @@
 import * as Yup from 'yup'
 import Title from '../models/TitoloProgramaEmExibicao'
+import User from '../models/User';
 
 class TitleProgramaExibicao{
 
   async index(req, res){
-    try {
-      
+    try { 
       const titles = await Title.findAll();
 
       return res.json(titles);
@@ -51,6 +51,53 @@ class TitleProgramaExibicao{
     }
   }
 
+  async update(req, res) {
+    try {
+
+      const {id} = req.params;
+
+      const titleRequest = await Title.findByPk(id)
+
+      if(!titleRequest){
+        return res.status(404).json({error: 'NotFound'})
+      }
+      await titleRequest.update(req.body);
+
+      return res.json({ok: true})
+    } catch (err){
+      return res.status(500).json({error: err.message})
+
+    }
+  }
+
+  async delete( req, res){
+    try {
+
+      const {id} = req.params;
+
+      const titleREQUEST = await Title.findByPk(id);
+
+      const {userId} = req;
+
+      const userLogado = await User.findByPk(userId);
+
+      if(!userLogado.adm){
+        return res.status(401).json({error: 'Não autorizado a fazer esta ação'})
+
+      }
+
+      if(!titleREQUEST){
+        return res.status(404).json({error: 'Not found'})
+      }
+
+      await titleREQUEST.destroy();
+
+      return res.json({ok: true})
+
+    } catch(err) {
+      return res.json({error: err.message})
+    }
+  }
 }
 
 export default new TitleProgramaExibicao();

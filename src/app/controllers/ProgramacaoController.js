@@ -267,39 +267,23 @@ class ProgramacaoController {
 
   async update(req, res){
     const schema = Yup.object().shape({
-      horario: Yup.string().min(5),
+      horario: Yup.string(),
       radio_id: Yup.number(),
       programa: Yup.number(),
       dia: Yup.number(),
       user: Yup.number()
     });
     try {
-
       if(!( await schema.isValid(req.body))) {
         return res.status(400).json({error: 'Verifique os dadaos'})
       }
 
       const { id: RadioID} = req.params;
-      const userLogado = await User.findByPk(req.userId);
+      // const userLogado = await User.findByPk(req.userId);
 
       const programacaoEXISTS = await Programacao.findByPk(RadioID);
 
       const dados = req.body;
-
-      if(dados.horario){
-        const programacaoHorario = await Programacao.findOne({ 
-          where: { 
-            programa: dados.programa,
-            horario: dados.horario,
-            dia: dados.dia,
-            radio_id: userLogado.adm ? dados.radio_id : userLogado.radio_id
-          } 
-        });
-  
-        if(programacaoHorario){
-          return res.status(400).json({error: 'Programação já existe'});
-        }
-      }
 
       const LocutorRequired = await User.findByPk(dados.user);
 
@@ -314,7 +298,13 @@ class ProgramacaoController {
 
       }
 
-      const programacaoAtt = await programacaoEXISTS.update(req.body);
+      const programacaoAtt = await programacaoEXISTS.update({
+        horario: req.body.horario,
+        radio_id: req.body.radio_id,
+        dia_id: req.body.dia,
+        user_id: req.body.user,
+        programa_id: req.body.programa
+      });
 
       return res.json(programacaoAtt);
     } catch (err) {

@@ -96,12 +96,13 @@ class RadioController{
       cidade: Yup.number(),
       facebook: Yup.string().url(),
       instagram: Yup.string().url(),
-      whatsapp: Yup.string().min(14).max(14),
+      whatsapp: Yup.string().url(),
       link: Yup.string().url('Insira uma url válida').required('A URL é requerida')
     })
 
     try {
       if(!(await schema.isValid(req.body))){
+        console.log(req.body)
         return res.status(400).json({error: 'Erro, verifique os dados'})
       }
 

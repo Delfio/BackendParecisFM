@@ -8,6 +8,30 @@ import Title from '../models/TitoloProgramaEmExibicao'
 
 class ProgramaEmExibicao {
 
+  async show(req, res){
+    try {
+
+      const {id: RadioID} = req.params;
+
+      const programas = await Exibicao.findAll({
+        where:{
+          radio_id: RadioID
+        },
+        include: [
+          {
+            model: Programa,
+            as: 'programa'
+          }
+        ]
+      });
+
+      return res.json(programas);
+
+    } catch(err) {
+
+    }
+  }
+
   async index(req,res) {
     try {
       const {id} = req.params
@@ -80,6 +104,41 @@ class ProgramaEmExibicao {
       return res.json(programaEmExibicao)
     } catch(err){
       return res.json({error: err.message})
+    }
+  }
+
+  async update(req, res) {
+    try {
+
+      const {id} = req.params
+      const programacaoExists = Exibicao.findByPk(id);
+
+      if(!programacaoExists){
+        return res.status(404).json({error: 'not found'})
+      }
+
+      const att = await programacaoExists.update(req.body);
+
+      return res.json(att);
+    } catch (err){
+      return res.json({error: err.message})
+      
+    }
+  }
+
+  async delete(req, res) {
+    try {
+      const {id} = req.params
+      const programacaoExists = await Exibicao.findByPk(id);
+      if(!programacaoExists){
+        return res.status(404).json({error: 'not found'})
+      }
+      await programacaoExists.destroy();
+
+      return res.json({ok: true})
+    } catch (err){
+      return res.json({error: err.message})
+
     }
   }
 

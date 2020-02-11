@@ -42,8 +42,11 @@ class UserController{
       const userLogado = await User.findByPk(userId);
 
       if(userLogado.adm){
-        const users = await User.findAll({
-          attributes: ['name', 'email', 'locutor'],
+        const adms = await User.findAll({
+          attributes: ['id', 'name', 'email', 'locutor', 'adm'],
+          where:{
+            adm: true
+          },
           include: [
             {
               model: Radio,
@@ -56,11 +59,31 @@ class UserController{
             }
           ]
         });
-        return res.json(users)
+        const locutor = await User.findAll({
+          attributes: ['id', 'name', 'email', 'locutor', 'adm'],
+          where:{
+            adm: false,
+          },
+          include: [
+            {
+              model: Radio,
+              as: 'radio',
+              attributes: ['name']
+            },
+            {
+              model: Avatar,
+              as: 'avatar'
+            }
+          ]
+        });
+        return res.json({
+          adms: adms,
+          locutores: locutor
+        })
       }
 
       const users = await User.findAll({
-        attributes: ['name', 'email', 'locutor'],
+        attributes: ['id', 'name', 'email', 'locutor'],
         where: {
           radio_id: userLogado.radio_id
         },
@@ -93,7 +116,8 @@ class UserController{
       password: Yup.string().required('Senha é obrigatória').min(6, 'Minimo de 6 digitos'),
       locutor: Yup.boolean(),
       cidade: Yup.string(),
-      telefone: Yup.string().min(9).max(12)
+      telefone: Yup.string().min(9).max(12),
+      adm: Yup.boolean()
     })
 
     try{
@@ -122,6 +146,7 @@ class UserController{
         cpf: req.body.cpf,
         telefone: req.body.telefone,
         cidade: req.body.cidade,
+        adm: req.body.adm,
         locutor: req.body.locutor? true : false
       });
 
