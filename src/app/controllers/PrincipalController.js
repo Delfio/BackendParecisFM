@@ -11,6 +11,7 @@ import ImagemTop3s from '../models/ImagemTop3';
 import Contato from '../models/Contato';
 import Dia from '../models/Dia';
 import Cidade from '../models/Cidade';
+import Icon from '../models/IconRadio';
 
 import { Op } from 'sequelize'
 
@@ -189,6 +190,10 @@ class PrincipalController {
           model: Cidade,
           as: 'cidade',
           attributes: ['nome']
+        },
+        {
+          model: Icon,
+          as: 'icon'
         }
       ]
     });
