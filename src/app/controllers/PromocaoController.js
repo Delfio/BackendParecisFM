@@ -101,7 +101,7 @@ class PromocaoController {
   async store(req, res){
     const schema = Yup.object().shape({
       nome: Yup.string().required(),
-      link: Yup.string().url().required(),
+      link: Yup.string().url(),
       descricao: Yup.string().required(),
       facebook: Yup.boolean(),
       instagram: Yup.boolean(),

@@ -135,7 +135,10 @@ class RadioController{
       name: Yup.string(),
       cidade: Yup.number(),
       link: Yup.string().url('Insira uma url válida'),
-      icon_id: Yup.number()
+      icon_id: Yup.number(),
+      facebook: Yup.string().url(),
+      instagram: Yup.string().url(),
+      whatsapp: Yup.string().url(),
     })
     try{
       if(!(await schema.isValid(req.body))){

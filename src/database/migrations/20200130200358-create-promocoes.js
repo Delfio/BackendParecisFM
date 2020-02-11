@@ -15,7 +15,7 @@ module.exports = {
       },
       link: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       facebook: {
         type: Sequelize.BOOLEAN,

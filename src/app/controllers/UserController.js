@@ -91,7 +91,9 @@ class UserController{
       email: Yup.string().email('insira um email válido').required('O email é obrigatório'),
       cpf: Yup.string().required(),
       password: Yup.string().required('Senha é obrigatória').min(6, 'Minimo de 6 digitos'),
-      locutor: Yup.boolean()
+      locutor: Yup.boolean(),
+      cidade: Yup.string(),
+      telefone: Yup.string().min(9).max(12)
     })
 
     try{
@@ -118,6 +120,8 @@ class UserController{
         radio_id: req.body.radio_id,
         password: req.body.password,
         cpf: req.body.cpf,
+        telefone: req.body.telefone,
+        cidade: req.body.cidade,
         locutor: req.body.locutor? true : false
       });
 
