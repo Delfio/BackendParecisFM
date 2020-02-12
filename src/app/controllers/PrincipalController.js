@@ -102,7 +102,7 @@ class PrincipalController {
     // })
     // console.log( "sdfasdfsdf :  " ,programcaoTnc, "  sadfsdfsdf ....")
 
-    console.log(id);
+
     //Banners e infos da rádio
     const radio = await Radio.findAll({
       where:{ id: IdRadio },

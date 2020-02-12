@@ -36,7 +36,7 @@ module.exports = {
   },
 
   down: (queryInterface) => {
-    return queryInterface.dropTable('programacoes_em_exibicaos');
+    return queryInterface.dropTable('titulos_programacoes_em_exibicaos');
 
   }
 };
