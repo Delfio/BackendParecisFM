@@ -87,7 +87,6 @@ class PrincipalController {
     }
     //executando a função e pegando seu valor
     const diaAtual = dia();
-    console.log(diaAtual)
 
     //Pegar o id do dia atual
     const {id} = await Dias.findOne({
@@ -103,7 +102,7 @@ class PrincipalController {
     // })
     // console.log( "sdfasdfsdf :  " ,programcaoTnc, "  sadfsdfsdf ....")
 
-
+    console.log(id);
     //Banners e infos da rádio
     const radio = await Radio.findAll({
       where:{ id: IdRadio },
