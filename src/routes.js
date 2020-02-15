@@ -65,9 +65,11 @@ routes.get('/promocao/:id', PromocaoController.index);
 
 routes.get('/dias', DiasController.index)
 
-routes.put('/users/:id', UserController.update);
+routes.post('/estados', EstadosController.store)
+routes.post('/cidades', CidadeController.store)
 
 routes.use(authMiddlewares);
+routes.put('/users/:id', UserController.update);
 
 routes.post('/programa', ProgramaController.store);
 routes.get('/programa',ProgramaController.index);
@@ -113,12 +115,10 @@ routes.delete('/contato/:id', ContatoController.delete);
 routes.get('/contato/:id', ContatoController.show);
 routes.get('/contato', ContatoController.index);
 
-routes.post('/estados', EstadosController.store)
 routes.get('/estados', EstadosController.index)
 routes.put('/estados/:id', EstadosController.update)
 routes.delete('/estados/:id', EstadosController.delete)
 
-routes.post('/cidades', CidadeController.store)
 routes.put('/cidades/:id', CidadeController.update)
 routes.delete('/cidades/:id', CidadeController.delete)
 routes.get('/cidades', CidadeController.index)
