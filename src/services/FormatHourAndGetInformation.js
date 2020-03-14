@@ -4,7 +4,6 @@ import Radio from "../app/models/Radio";
 import Banner from "../app/models/Banner";
 import Programacao from "../app/models/Programacao";
 import Programa from "../app/models/Programa";
-import Dias from "../app/models/Dia";
 import User from "../app/models/User";
 import Avatar from "../app/models/FotoLocutor";
 import Contato from "../app/models/Contato";
@@ -14,6 +13,7 @@ import Contato from "../app/models/Contato";
 import Dia from "../app/models/Dia";
 import Cidade from "../app/models/Cidade";
 import Icon from "../app/models/IconRadio";
+import Dias from "../app/models/Dia";
 
 import { Op } from "sequelize";
 import {
@@ -40,7 +40,7 @@ class FormatedHourAndGetInformation {
       const hours = `${isHourAtual}`; //Variavel para avaliar as horas
       const minuted = `${isMinuteAtual}`; //Variavel para avaliar os minutos
 
-      // Formatando a hora para duas casas - caso seja necessárip
+      // Formatando a hora para duas casas - caso seja necessário
       const isHourFormated = () => {
         if (hours.length == 1) {
           const x = `0${isHourAtual}`;
@@ -55,10 +55,18 @@ class FormatedHourAndGetInformation {
       // Formatando os minutos para 2 casas
       const isMinutedFormats = () => {
         if (minuted.length == 1) {
-          const x = `0${isMinuteAtual}`;
-          return x;
-        } else {
           return isMinuteAtual;
+        } else {
+          if (minuted >= 10 && minuted <= 30) {
+            const x = "2";
+            return x;
+          } else if (minuted >= 30 && minuted <= 40) {
+            const x = "3";
+            return x;
+          } else if (minuted >= 40 && minuted <= 58) {
+            const x = "4";
+            return x;
+          }
         }
       };
       const minFormateds = isMinutedFormats();
@@ -89,10 +97,8 @@ class FormatedHourAndGetInformation {
         where: { nome: diaAtual }
       });
 
-      // Hora formatada 18:45 18:00 ...
+      // Hora formatada 18:4 18:0 ...
       const hourFormated = `${hourFormateds}:${minFormateds}`;
-
-      console.log(hourFormated);
 
       // Buscar por programação quebrada
       const programacaoQuebrada = await Programacao.findOne({

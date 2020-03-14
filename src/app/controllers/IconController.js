@@ -1,22 +1,21 @@
-import Icon from '../models/IconRadio';
+import Icon from "../models/IconRadio";
 
-class IconController{
-
-  async store(req,res) {
-    try{
+class IconController {
+  async store(req, res) {
+    try {
+      console.log("chegou aqui brow");
       const { originalname: name, filename: path } = req.file;
 
       const file = await Icon.create({
         name,
-        path,
+        path
       });
-  
+
       return res.json(file);
-    } catch(err){
-      return res.status(500).json({error: err.message})
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
     }
   }
-
 }
 
 export default new IconController();
