@@ -1,141 +1,142 @@
-import * as Yup from 'yup';
-import User from '../models/User';
-import Radio from '../models/Radio';
-import Avatar from '../models/FotoLocutor';
+import * as Yup from "yup";
+import User from "../models/User";
+import Radio from "../models/Radio";
+import Avatar from "../models/FotoLocutor";
 
-class UserController{
-
-  async show (req, res){
+class UserController {
+  async show(req, res) {
     try {
-
       const { id } = req.params;
 
       const user = await User.findOne({
-        attributes: ['name', 'email', 'locutor', 'telefone', 'cidade'],
+        attributes: ["name", "email", "locutor", "telefone", "cidade"],
         where: {
           id: id
         },
         include: [
           {
             model: Radio,
-            as: 'radio',
-            attributes: ['name']
+            as: "radio",
+            attributes: ["name"]
           },
           {
             model: Avatar,
-            as: 'avatar'
+            as: "avatar"
           }
         ]
       });
 
       return res.json(user);
     } catch (err) {
-      return res.status(500).json({error: err.message})
-
+      return res.status(500).json({ error: err.message });
     }
   }
 
-  async index(req, res){
-   
+  async index(req, res) {
     try {
       const { userId } = req;
       const userLogado = await User.findByPk(userId);
 
-      if(userLogado.adm){
+      if (userLogado.adm) {
         const adms = await User.findAll({
-          attributes: ['id', 'name', 'email', 'locutor', 'adm'],
-          where:{
+          attributes: ["id", "name", "email", "locutor", "adm"],
+          where: {
             adm: true
           },
           include: [
             {
               model: Radio,
-              as: 'radio',
-              attributes: ['name']
+              as: "radio",
+              attributes: ["name"]
             },
             {
               model: Avatar,
-              as: 'avatar'
+              as: "avatar"
             }
           ]
         });
         const locutor = await User.findAll({
-          attributes: ['id', 'name', 'email', 'locutor', 'adm'],
-          where:{
-            adm: false,
+          attributes: ["id", "name", "email", "locutor", "adm"],
+          where: {
+            adm: false
           },
           include: [
             {
               model: Radio,
-              as: 'radio',
-              attributes: ['name']
+              as: "radio",
+              attributes: ["name"]
             },
             {
               model: Avatar,
-              as: 'avatar'
+              as: "avatar"
             }
           ]
         });
         return res.json({
           adms: adms,
           locutores: locutor
-        })
+        });
       }
 
       const users = await User.findAll({
-        attributes: ['id', 'name', 'email', 'locutor'],
+        attributes: ["id", "name", "email", "locutor"],
         where: {
           radio_id: userLogado.radio_id
         },
         include: [
           {
             model: Radio,
-            as: 'radio',
-            attributes: ['name']
+            as: "radio",
+            attributes: ["name"]
           },
           {
             model: Avatar,
-            as: 'avatar'
+            as: "avatar"
           }
         ]
       });
 
-      return res.json(users)
-
-    } catch(err) {
-      return res.status(500).json({error: err.message})
-
+      return res.json(users);
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
     }
   }
 
   async store(req, res) {
     const schema = Yup.object().shape({
-      name: Yup.string().required('nome é obrigatório'),
-      email: Yup.string().email('insira um email válido').required('O email é obrigatório'),
+      name: Yup.string().required("nome é obrigatório"),
+      email: Yup.string()
+        .email("insira um email válido")
+        .required("O email é obrigatório"),
       cpf: Yup.string().required(),
-      password: Yup.string().required('Senha é obrigatória').min(6, 'Minimo de 6 digitos'),
+      password: Yup.string()
+        .required("Senha é obrigatória")
+        .min(6, "Minimo de 6 digitos"),
       locutor: Yup.boolean(),
       cidade: Yup.string(),
-      telefone: Yup.string().min(9).max(12),
+      telefone: Yup.string()
+        .min(9)
+        .max(12),
       adm: Yup.boolean()
-    })
+    });
 
-    try{
-
-      if(!(await schema.isValid(req.body))){
-        return res.status(400).json({error: 'Erro, verifique os dados'})
+    try {
+      if (!(await schema.isValid(req.body))) {
+        return res.status(400).json({ error: "Erro, verifique os dados" });
       }
 
-      const userExists = await User.findOne({ where: {email: req.body.email} });
+      const userExists = await User.findOne({
+        where: { email: req.body.email }
+      });
 
-      if(userExists) {
-        return res.status(400).json({error: 'Email já em uso'})
+      if (userExists) {
+        return res.status(400).json({ error: "Email já em uso" });
       }
 
       const RadioRequest = await Radio.findByPk(req.body.radio_id);
 
-      if(!RadioRequest){
-        return res.status(400).json({error: 'Radio não existe'})
+      if (!RadioRequest) {
+        return res.status(400).json({ error: "Radio não existe" });
       }
 
       const { id, name, email, radio, locutor } = await User.create({
@@ -147,7 +148,7 @@ class UserController{
         telefone: req.body.telefone,
         cidade: req.body.cidade,
         adm: req.body.adm,
-        locutor: req.body.locutor? true : false
+        locutor: req.body.locutor ? true : false
       });
 
       return res.json({
@@ -157,69 +158,69 @@ class UserController{
         radio,
         locutor
       });
-
-    }catch(err){
-      return res.status(500).json({error: err.message})
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
     }
   }
 
-  async update(req,res){
-
+  async update(req, res) {
     const schema = Yup.object().shape({
-      name:
-        Yup.string(),
+      name: Yup.string(),
 
-      email:
-        Yup.string().email(),
+      email: Yup.string().email(),
 
-      oldPassword:
-        Yup.string().min(6),
+      oldPassword: Yup.string().min(6),
 
-      telefone:
-        Yup.string().min(8).max(11),
+      telefone: Yup.string()
+        .min(8)
+        .max(11),
 
-      cidade:
-        Yup.string(),
+      cidade: Yup.string(),
 
-      password:
-        Yup.string().min(6).when('oldPassword', (oldPassword, field) => 
-        oldPassword ? field.required(): field
+      password: Yup.string()
+        .min(6)
+        .when("oldPassword", (oldPassword, field) =>
+          oldPassword ? field.required() : field
         ),
 
-      confirmPassword:
-        Yup.string().when('password', (password, field) =>
-        password ? field.required().oneOf([Yup.ref('password')]) : field
+      confirmPassword: Yup.string().when("password", (password, field) =>
+        password ? field.required().oneOf([Yup.ref("password")]) : field
       ),
-      radio_id:
-        Yup.number(),
-      
-      cfp_request:
-        Yup.string().min(11).max(12),
-      
-      cpf_password:
-        Yup.string()
+      radio_id: Yup.number(),
+
+      cfp_request: Yup.string()
+        .min(11)
+        .max(12),
+
+      cpf_password: Yup.string()
     });
 
     try {
-      if(!(await schema.isValid(req.body))){
-        return res.status(400).json({error: 'Erro, verifique os dados'})
+      if (!(await schema.isValid(req.body))) {
+        return res.status(400).json({ error: "Erro, verifique os dados" });
       }
 
-      const {userId} = req;
+      const { userId } = req;
 
-      const {email, oldPassword, password, cfp_request, cpf_password} = req.body;
-      const {id} = req.params;
-  
+      const {
+        email,
+        oldPassword,
+        password,
+        cfp_request,
+        cpf_password
+      } = req.body;
+      const { id } = req.params;
+
       //Restar a senha pelo CPF
-      if( id && cfp_request) {
+      if (id && cfp_request) {
         const userRequest = await User.findOne({
           where: {
             cpf: cfp_request
           }
         });
 
-        if(!userRequest) {
-          return res.status(401).json({error: 'CPF INVÁLIDO'})
+        if (!userRequest) {
+          return res.status(401).json({ error: "CPF INVÁLIDO" });
         }
 
         await userRequest.update({
@@ -227,30 +228,28 @@ class UserController{
         });
 
         return res.json(userRequest);
-      } else if(id && !cfp_request){
-        return res.status(400).json({error: 'Tem algo de errado ai'})
-
-      } else if(!id && cfp_request){
-
-        return res.status(400).json({error: 'Tem algo de errado ai pacero'})
+      } else if (id && !cfp_request) {
+        return res.status(400).json({ error: "Tem algo de errado ai" });
+      } else if (!id && cfp_request) {
+        return res.status(400).json({ error: "Tem algo de errado ai pacero" });
       }
 
-      const user =  await User.findByPk(userId);
-  
-      if(email && (email !== user.email)){
-        const userExists = await User.findOne({ where: {email} });
-  
-        if(userExists) {
-          return res.status(400).json({error: 'Email já em uso'})
+      const user = await User.findByPk(userId);
+
+      if (email && email !== user.email) {
+        const userExists = await User.findOne({ where: { email } });
+
+        if (userExists) {
+          return res.status(400).json({ error: "Email já em uso" });
         }
       }
 
-      if(!oldPassword && password ){
-        return res.status(401).json({error: 'Senha antiga não confere'})
+      if (!oldPassword && password) {
+        return res.status(401).json({ error: "Senha antiga não confere" });
       }
-  
-      if(oldPassword && !(await user.checkPassword(oldPassword))){
-        return res.status(401).json({error: 'Senha não confere'})
+
+      if (oldPassword && !(await user.checkPassword(oldPassword))) {
+        return res.status(401).json({ error: "Senha não confere" });
       }
 
       const userRequest = await user.update(req.body);
@@ -259,16 +258,58 @@ class UserController{
         where: {
           id: userRequest.id
         },
-        include:[
+        include: [
           {
             model: Avatar,
-            as: 'avatar'
+            as: "avatar"
           }
         ]
-      })
+      });
       return res.json(userRetornar);
-    } catch (err){
-      return res.status(500).json({error: err.message});
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  }
+
+  async delete(req, res) {
+    try {
+      const { userId } = req;
+      const { user_id } = req.params;
+
+      const userLogado = await User.findOne({
+        where: {
+          id: userId
+        }
+      });
+
+      if (user_id && userLogado.adm) {
+        const userRequest = await User.findOne({
+          where: {
+            id: user_id
+          }
+        });
+
+        if (!userRequest) {
+          return res.status(404).json({ error: "User not found" });
+        }
+
+        await userRequest.destroy();
+
+        await userRequest.save();
+
+        return res.json({ ok: true });
+      } else if (user_id && !userLogado.adm) {
+        return res.status(401).json({ error: "Não autorizado" });
+      } else if (!user_id) {
+        await userLogado.destroy();
+        await userLogado.save();
+
+        return res.json({ ok: true });
+      }
+
+      return res.json({ wtfmano: "como vc chegou aqui" });
+    } catch (err) {
+      return res.status(500).json(err.message);
     }
   }
 }
