@@ -9,7 +9,7 @@ class UserController {
       const { id } = req.params;
 
       const user = await User.findOne({
-        attributes: ["name", "email", "locutor", "telefone", "cidade"],
+        attributes: ["name", "email", "locutor", "telefone", "cidade", "cpf"],
         where: {
           id: id
         },
@@ -166,23 +166,17 @@ class UserController {
   async update(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string(),
-
       email: Yup.string().email(),
-
       oldPassword: Yup.string().min(6),
-
       telefone: Yup.string()
         .min(8)
         .max(11),
-
       cidade: Yup.string(),
-
       password: Yup.string()
         .min(6)
         .when("oldPassword", (oldPassword, field) =>
           oldPassword ? field.required() : field
         ),
-
       confirmPassword: Yup.string().when("password", (password, field) =>
         password ? field.required().oneOf([Yup.ref("password")]) : field
       ),
@@ -207,12 +201,13 @@ class UserController {
         oldPassword,
         password,
         cfp_request,
-        cpf_password
+        cpf_password,
+        radio_id
       } = req.body;
       const { id } = req.params;
 
-      //Restar a senha pelo CPF
-      if (id && cfp_request) {
+      //Restar a senha pelo CPF 'Esqueci minha senha'
+      if (id && cfp_request && !userId) {
         const userRequest = await User.findOne({
           where: {
             cpf: cfp_request
@@ -235,7 +230,25 @@ class UserController {
       }
 
       const user = await User.findByPk(userId);
+      
+      //Admin mudando as infos do usuário
+      if (id && user.adm && cfp_request) {
+        const userRequest = await User.findOne({
+          where: {
+            cpf: cfp_request
+          }
+        });
 
+        if (!userRequest) {
+          return res.status(401).json({ error: "CPF INVÁLIDO" });
+        }
+
+        await userRequest.update(req.body);
+        
+        return res.json(userRequest)
+      }
+
+      //User resetando a senha
       if (email && email !== user.email) {
         const userExists = await User.findOne({ where: { email } });
 

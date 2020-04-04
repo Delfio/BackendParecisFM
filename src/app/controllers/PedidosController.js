@@ -16,31 +16,13 @@ import ServiceSendRequestMusic from "../../services/ServiceSendRequestMusics";
 class PedidosController {
   async index(req, res) {
     try {
-      const { data } = req.query;
-
-      const isHourAtual = getHours(new Date(data));
-
-      const qtdNumeros = `${isHourAtual}`;
-
-      // // Formatando a hora ex: 18:00 | 09:00
-      const isHourFormated = () => {
-        if (qtdNumeros.length == 1) {
-          const x = `0${isHourAtual}:00`;
-          return x;
-        } else if (qtdNumeros.length == 2) {
-          const x = `${isHourAtual}:00`;
-          return x;
-        }
-      };
-      const horanessaporra = isHourFormated();
-
       const { radio_id } = req.params;
       const { userId } = req;
 
       const RadioRequest = await Radio.findByPk(radio_id);
       const userLogado = await User.findByPk(userId);
-      if (userLogado.radio_id != radio_id && !userLogado.adm) {
-        console.log("Não atorizadooooo");
+
+      if (userLogado.radio_id != radio_id) {
         return res.status(404).json({ error: "Não permitido" });
       }
       //Admin
@@ -48,48 +30,20 @@ class PedidosController {
         return res.json({ ok: true });
       }
       if (!RadioRequest) {
-        return res.status(404).json({ error: "Not find" });
+        return res.status(404).json({ error: "Not found" });
       }
 
-      const ultimosPedidos = await Pedidos.findAll({
-        where: {
-          radio_id: radio_id
-        },
-        limit: 5,
-        order: [["id", "DESC"]],
-        include: [
-          {
-            model: Programacao,
-            as: "programacao",
-            where: {
-              horario: {
-                [Op.like]: `%${horanessaporra}%`
-              }
-            },
-            include: [
-              {
-                model: Programa,
-                as: "programa",
-                attributes: ["nome"]
-              }
-            ]
-          }
-        ]
-      });
-
-      const { id } = await Programacao.findOne({
-        where: {
-          horario: {
-            [Op.like]: `%${horanessaporra}%`
-          },
-          radio_id: radio_id
-        }
-      });
+      const ultimosPedidos = await Notifications.find()
+        .where({radio: radio_id})
+        .limit(5)
+        .sort({createdAt: 'desc'})
 
       //User Normal
 
       return res.json(ultimosPedidos);
-    } catch (err) {}
+    } catch (err) {
+      return res.json(err.message);
+    }
   }
 
   async store(req, res) {
@@ -105,7 +59,8 @@ class PedidosController {
       musica: Yup.string().required("Informe o nome da música"),
       artista: Yup.string().required("Informe o nome da música"),
       data: Yup.date().required(),
-      genero: Yup.string().required()
+      genero: Yup.string().required() // da pessoa kkkk até eu pensei que fosse da música
+      //wtf mas sou eu que to fazendo.. pq eu to escrevendo pra mim mesmo bixo?
     });
 
     try {
@@ -133,7 +88,49 @@ class PedidosController {
         radio_id: RadioID
       });
 
+      // Se não tiver programação - criar mesmo assim pq o cliente mandou
       if (!RequestMusic) {
+
+        const dateNotification = () => {
+          const date = new Date(data);
+          const diaRequisitado = date.getDay();
+
+          switch (diaRequisitado) {
+            case 0:
+              return "Domingo"
+              break;
+            case 1:
+              return "Segunda-Feira"
+              break;
+            case 2:
+              return "Terça-Feira"
+              break;
+            case 3:
+              return "Quarta-Feira";
+              break;
+            case 4:
+              return "Quinta-Feira";
+            case 5:
+              return "Sexta-Feira";
+            case 6:
+              return "Sábado"
+            default:
+              break;
+          }
+        }
+        const message = `Novo pedido de ${nome} do telefone: ${telefone}. Musica: "${musica}", do artista: ${artista}`;
+
+        const dataParaMessagem = await dateNotification();
+
+        await Notifications.create({
+          content: message,
+          hora: hourUser,
+          dia:dataParaMessagem,
+          programa: 0,
+          radio: RadioID
+        });
+        
+        // Devolver resposta de erro, pois o front já trata
         return res.status(403).json({ error: "Sem programação" });
       }
 
@@ -145,6 +142,7 @@ class PedidosController {
       /**
        * Create a notification in MySQL
        */
+
       const notificacao = await Pedidos.create({
         nome,
         idade,

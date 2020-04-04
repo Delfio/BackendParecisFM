@@ -44,8 +44,8 @@ routes.post("/sessions", SessionsController.store);
 
 //Realizar pedido pela api normalmente
 routes.post("/musica/:id", PedidosController.store);
-//Repetir pedido via top3
-routes.post("/musica/:id/:pedidoId", PedidosController.store);
+//Repetir pedido via top3 "não implementado mais"
+// routes.post("/musica/:id/:pedidoId", PedidosController.store);
 //Exibir notificações de acordo com a rádio
 
 routes.get("/promocaoAtt/:id", PromocaoController.show);
@@ -64,6 +64,7 @@ routes.get("/top3Att/:id", Top3Controller.show);
 routes.get("/promocao/:id", PromocaoController.index);
 
 routes.get("/dias", DiasController.index);
+routes.post("/dias", DiaController.store);
 
 routes.post("/estados", EstadosController.store);
 routes.post("/cidades", CidadeController.store);
@@ -71,7 +72,6 @@ routes.post("/cidades", CidadeController.store);
 routes.get("/radio/:id", RadioController.show);
 
 routes.use(authMiddlewares);
-routes.put("/users/:id", UserController.update);
 
 routes.post("/programa", ProgramaController.store);
 routes.get("/programa", ProgramaController.index);
@@ -133,6 +133,8 @@ routes.get("/users", UserController.index);
 routes.get("/users/:id", UserController.show);
 routes.delete("/users/:user_id", UserController.delete);
 routes.delete("user", UserController.delete);
+//Esqueci minha senha e admin resetando infos do user
+routes.put("/users/:id", UserController.update);
 
 routes.post("/radio", RadioController.store);
 routes.put("/radio/:id", RadioController.update);

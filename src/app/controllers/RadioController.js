@@ -102,7 +102,6 @@ class RadioController{
 
     try {
       if(!(await schema.isValid(req.body))){
-        console.log(req.body)
         return res.status(400).json({error: 'Erro, verifique os dados'})
       }
 
